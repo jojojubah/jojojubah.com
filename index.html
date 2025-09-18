@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<!-- Y3JlYXRlZCBieSBKb2pvSnViYWggMjAyNQ== -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio</title>
+    <link rel="icon" type="image/png" href="assets/favicon.png">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="lg-2">
+    <div class="floating-nav-container">
+        <div class="nav-section nav-left home-icon">
+            <div class="nav-item">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3 9.5L12 2L21 9.5V20C21 20.5523 20.5523 21 20 21H4C3.44772 21 3 20.5523 3 20V9.5Z" stroke="#333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M9 21V12H15V21" stroke="#333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+        </div>
+        <div class="nav-section nav-center">
+            <div class="nav-item" data-section="home">Home</div>
+            <div class="nav-item" data-section="about">About</div>
+            <div class="nav-item" data-section="skills">Skills</div>
+        </div>
+        <div class="nav-section nav-right" id="menu-toggle">
+            <div class="nav-item menu-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="5" cy="12" r="2" fill="#333"/>
+                    <circle cx="12" cy="12" r="2" fill="#333"/>
+                    <circle cx="19" cy="12" r="2" fill="#333"/>
+                </svg>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dropdown moved outside blurred parent -->
+    <div class="dropdown-menu" id="dropdown-menu">
+        <div class="dropdown-item" data-section="projects">Projects</div>
+        <div class="dropdown-item" data-section="contact">Contact</div>
+        <div class="dropdown-item">Portfolio</div>
+        <div class="dropdown-item">Resume</div>
+        <div class="dropdown-item">Blog</div>
+    </div>
+
+    <main>
+        <section id="home" class="hero">
+            <div class="hero-container">
+                <div class="hero-left">
+                    <div class="intro-text">Hello! I'm</div>
+                    <h1 class="hero-name">Jojo <span class="name-highlight">Jubah</span></h1>
+                    <p class="hero-subtitle">Vanilla Vibe Coder & Solo Dev</p>
+                    <p class="hero-description">Experimenting with AI, code, and design to turn raw ideas into interactive realities.</p>
+
+                    <div class="hero-buttons">
+                        <button class="contact-btn"><span class="contact-btn-text">Contact Me</span></button>
+                        <button class="projects-btn">View Projects</button>
+                        <div class="social-icons">
+                            <div class="social-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <div class="social-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <rect x="2" y="3" width="20" height="14" rx="2" ry="2" stroke="currentColor" stroke-width="2"/>
+                                    <line x1="8" y1="21" x2="16" y2="21" stroke="currentColor" stroke-width="2"/>
+                                    <line x1="12" y1="17" x2="12" y2="21" stroke="currentColor" stroke-width="2"/>
+                                </svg>
+                            </div>
+                            <div class="social-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <polyline points="22,6 12,13 2,6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hero-right">
+                    <div class="code-window">
+                        <div class="window-header">
+                            <div class="window-dots">
+                                <span class="dot red"></span>
+                                <span class="dot yellow"></span>
+                                <span class="dot green"></span>
+                            </div>
+                            <div class="file-name">developer.js</div>
+                        </div>
+                        <div class="code-content">
+                            <div class="code-line">
+                                <span class="comment">// Vanilla Vibe Coder / Solo Dev</span>
+                            </div>
+                            <div class="code-line"></div>
+                            <div class="code-line">
+                                <span class="keyword">const</span> <span class="variable">developer</span> <span class="operator">=</span> <span class="bracket">{</span>
+                            </div>
+                            <div class="code-line indent">
+                                <span class="property">name:</span> <span class="string">'Jojo Jubah'</span><span class="punctuation">,</span>
+                            </div>
+                            <div class="code-line indent">
+                                <span class="property">skills:</span> <span class="bracket">[</span><span class="string">'Batch'</span><span class="punctuation">,</span> <span class="string">'Node.js'</span><span class="punctuation">,</span> <span class="string">'Python'</span><span class="bracket">]</span><span class="punctuation">,</span>
+                            </div>
+                            <div class="code-line indent">
+                                <span class="property">focuses:</span> <span class="bracket">[</span><span class="string">'Full-Stack'</span><span class="punctuation">,</span> <span class="string">'UI/UX'</span><span class="bracket">]</span><span class="punctuation">,</span>
+                            </div>
+                            <div class="code-line indent">
+                                <span class="property">learning:</span> <span class="string">'Iterative Solidification'</span>
+                            </div>
+                            <div class="code-line">
+                                <span class="bracket">}</span><span class="punctuation">;</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="about">
+            <div class="container">
+                <div class="about-header">
+                    <h2>About Me</h2>
+                </div>
+
+                <div class="about-content">
+                    <div class="about-left">
+                        <div class="bio-section">
+                            <h3>
+                                <div class="bio-icon">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <polyline points="14,2 14,8 20,8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <line x1="16" y1="13" x2="8" y2="13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                        <line x1="16" y1="17" x2="8" y2="17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                        <polyline points="10,9 9,9 8,9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </div>
+                                Bio
+                            </h3>
+                            <p>I'm a web developer and educator focused on AI-powered interfaces and lean, maintainable code for creators.
+                                Using vanilla HTML/CSS/JS, I ship lightweight full-stack sites and prototypes quickly.
+                                My expertise is in designing clean UI components, context-engineered chatbots, and serverless functions, ensuring fast, secure, and user-friendly experiences across devices and platforms.</p>
+                        </div>
+
+                        <div class="info-cards">
+                            <div class="info-card">
+                                <div class="card-icon bio-icon">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M12 3l10 6-10 6L2 9l10-6z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M17 16l-5 3-5-3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M6 9v6c0 3 3 6 6 6s6-3 6-6V9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </div>
+                                <h4>Education</h4>
+                                <div class="card-content">
+                                    <h5>SQL</h5>
+                                    <p>365 Data Science</p>
+                                    <span class="date">2024</span>
+                                    <p class="achievement">Certified</p>
+                                </div>
+                            </div>
+
+                            <div class="info-card">
+                                <div class="card-icon bio-icon">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <rect x="2" y="7" width="20" height="14" rx="2" ry="2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </div>
+                                <h4>Experience</h4>
+                                <div class="card-content">
+                                    <h5>Full Stack Developer</h5>
+                                    <p>Self Taught</p>
+                                    <span class="date">Since March 2024</span>
+
+                                    <h5>Web Developer</h5>
+                                    <p>Freelance</p>
+                                    <span class="date">2023 - Present</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="about-right">
+                        <div class="profile-card">
+                            <div class="profile-image">
+                                <img src="assets/headshot.gif" alt="Profile Picture" />
+                                <div class="gpa-badge">CompTIA A+</div>
+                            </div>
+                            <h3>Jojo Jubah</h3>
+                            <p>Solo Dev</p>
+
+                            <div class="skills-tags">
+                                <span class="skill-tag">Rust</span>
+                                <span class="skill-tag">Python</span>
+                                <span class="skill-tag">UI/UX</span>
+                                <span class="skill-tag">Full Stack</span>
+                            </div>
+
+                            <a href="https://linkedin.com/in/josephasutaitis" target="_blank" class="linkedin-btn">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                                </svg>
+                                LinkedIn
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects" class="skills">
+            <div class="container">
+                <div class="skills-header">
+                    <h2>Skills</h2>
+                </div>
+                <p class="skills-description">I've combined AI native learning with hands-on experience across the full development stack, from frontend to backend and everything in between.</p>
+
+                <div class="skills-grid">
+                    <div class="skill-category">
+                        <div class="category-header">
+                            <div class="category-icon">
+                                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <polyline points="16,18 22,12 16,6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <polyline points="8,6 2,12 8,18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <h3>Programming Languages</h3>
+                        </div>
+                        <div class="skill-tags">
+                            <span class="skill-tag">JavaScript</span>
+                            <span class="skill-tag">Batch</span>
+                            <span class="skill-tag">Python</span>
+                            <span class="skill-tag">Rust</span>
+                            <span class="skill-tag">HTML/CSS</span>
+                        </div>
+                    </div>
+
+                    <div class="skill-category">
+                        <div class="category-header">
+                            <div class="category-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <rect x="2" y="3" width="20" height="14" rx="2" ry="2" stroke="currentColor" stroke-width="2"/>
+                                    <line x1="8" y1="21" x2="16" y2="21" stroke="currentColor" stroke-width="2"/>
+                                    <line x1="12" y1="17" x2="12" y2="21" stroke="currentColor" stroke-width="2"/>
+                                </svg>
+                            </div>
+                            <h3>Frontend Development</h3>
+                        </div>
+                        <div class="skill-tags">
+                            <span class="skill-tag">React</span>
+                            <span class="skill-tag">HTML/CSS/JS</span>
+                            <span class="skill-tag">Next.js</span>
+                            <span class="skill-tag">Tailwind CSS</span>
+                        </div>
+                    </div>
+
+                    <div class="skill-category">
+                        <div class="category-header">
+                            <div class="category-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <rect x="2" y="2" width="20" height="8" rx="2" ry="2" stroke="currentColor" stroke-width="2"/>
+                                    <rect x="2" y="14" width="20" height="8" rx="2" ry="2" stroke="currentColor" stroke-width="2"/>
+                                    <line x1="6" y1="6" x2="6" y2="6" stroke="currentColor" stroke-width="2"/>
+                                    <line x1="6" y1="18" x2="6" y2="18" stroke="currentColor" stroke-width="2"/>
+                                </svg>
+                            </div>
+                            <h3>Backend Development</h3>
+                        </div>
+                        <div class="skill-tags">
+                            <span class="skill-tag">Node.js</span>
+                            <span class="skill-tag">Express.js</span>
+                            <span class="skill-tag">Firebase</span>
+                            <span class="skill-tag">Serverless APIs</span>
+                        </div>
+                    </div>
+
+                    <div class="skill-category">
+                        <div class="category-header">
+                            <div class="category-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <ellipse cx="12" cy="5" rx="9" ry="3" stroke="currentColor" stroke-width="2"/>
+                                    <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" stroke="currentColor" stroke-width="2"/>
+                                    <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" stroke="currentColor" stroke-width="2"/>
+                                </svg>
+                            </div>
+                            <h3>Databases</h3>
+                        </div>
+                        <div class="skill-tags">
+                            <span class="skill-tag">MongoDB</span>
+                            <span class="skill-tag">MySQL</span>
+                            <span class="skill-tag">Firebase</span>
+                            <span class="skill-tag">Firestore</span>
+                        </div>
+                    </div>
+
+                    <div class="skill-category">
+                        <div class="category-header">
+                            <div class="category-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" stroke="currentColor" stroke-width="2"/>
+                                </svg>
+                            </div>
+                            <h3>Tools & Technologies</h3>
+                        </div>
+                        <div class="skill-tags">
+                            <span class="skill-tag">Git</span>
+                            <span class="skill-tag">Claude</span>
+                            <span class="skill-tag">GPT</span>
+                            <span class="skill-tag">Replit</span>
+                        </div>
+                    </div>
+
+                    <div class="skill-category">
+                        <div class="category-header">
+                            <div class="category-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <h3>Design</h3>
+                        </div>
+                        <div class="skill-tags">
+                            <span class="skill-tag">Figma</span>
+                            <span class="skill-tag">UI/UX Design</span>
+                            <span class="skill-tag">Wireframing</span>
+                            <span class="skill-tag">Prototyping</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects" class="projects">
+            <div class="container">
+                <h2>Projects</h2>
+                <div class="projects-content">
+                    <p class="projects-description">Here are some of my recent projects that showcase my skills and experience in web development and AI integration.</p>
+
+                    <div class="projects-grid">
+                        <div class="project-card bitcoin-game-card">
+                            <h3>₿itcoin Runner</h3>
+                            <p>A fast-paced endless runner game with Bitcoin-themed graphics, power-ups, and Firebase leaderboards.</p>
+
+                            <!-- Game Canvas Container -->
+                            <div class="game-container">
+                                <canvas id="bitcoinGameCanvas"></canvas>
+
+                                <!-- Game Menu Overlay -->
+                                <div id="bitcoinMenuOverlay" class="game-menu-overlay">
+                                    <h4>₿itcoin Runner</h4>
+                                    <button onclick="startBitcoinGame()">🎮 Play</button>
+                                    <button onclick="changeBitcoinSkin()">🎨 Change Skin</button>
+                                </div>
+
+                                <!-- In-Game Pause Button -->
+                                <div id="bitcoinPauseButton" class="game-pause-btn" onclick="openBitcoinPauseMenu()" style="display: none;">
+                                    ⏸️
+                                </div>
+                            </div>
+
+                            <div class="project-tags">
+                                <span class="project-tag">JavaScript</span>
+                                <span class="project-tag">Canvas API</span>
+                                <span class="project-tag">Firebase</span>
+                                <span class="project-tag">Game Development</span>
+                            </div>
+                        </div>
+
+                        <div class="project-card youtube-video-card">
+                            <h3>AI-Powered Development Workflow</h3>
+                            <p>Watch my development process using AI tools and modern techniques to build efficient, scalable applications.</p>
+
+                            <!-- YouTube Video Container -->
+                            <div class="video-container">
+                                <iframe
+                                    src="https://www.youtube.com/embed/TjYel8UL5aI?start=56"
+                                    title="AI-Powered Development Workflow"
+                                    frameborder="0"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                    allowfullscreen>
+                                </iframe>
+                            </div>
+
+                            <div class="project-tags">
+                                <span class="project-tag">AI Development</span>
+                                <span class="project-tag">Workflow</span>
+                                <span class="project-tag">YouTube</span>
+                                <span class="project-tag">Tutorial</span>
+                            </div>
+                        </div>
+
+                        <div class="project-card youtube-video-card">
+                            <h3>Quick Development Tips</h3>
+                            <p>Short-form content showcasing rapid development techniques and coding tips for efficient programming.</p>
+
+                            <!-- YouTube Shorts Video Container -->
+                            <div class="video-container shorts-container">
+                                <iframe
+                                    src="https://www.youtube.com/embed/kXA6Ktdqzos"
+                                    title="Quick Development Tips - YouTube Shorts"
+                                    frameborder="0"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                    allowfullscreen>
+                                </iframe>
+                            </div>
+
+                            <div class="project-tags">
+                                <span class="project-tag">YouTube Shorts</span>
+                                <span class="project-tag">Development Tips</span>
+                                <span class="project-tag">Quick Tutorial</span>
+                                <span class="project-tag">Coding</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="contact">
+            <div class="container">
+                <h2>Contact</h2>
+                <div class="contact-email">
+                    <span id="emailHidden">
+                        <button id="revealEmail" class="reveal-email-btn">Reveal Email</button>
+                    </span>
+                    <span id="emailVisible" hidden>hello@jojojubah.com</span>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Glass Footer matching navbar style -->
+    <div class="floating-footer-container">
+        <div class="nav-section footer-left" id="info-toggle">
+            <div class="nav-item info-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="12" cy="12" r="10" stroke="#333" stroke-width="2"/>
+                    <path d="M12 16v-4" stroke="#333" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M12 8h.01" stroke="#333" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+            </div>
+        </div>
+        <div class="nav-section footer-center">
+            <a href="https://github.com/jojojubah" target="_blank" class="nav-item social-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="#333" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 0C5.374 0 0 5.373 0 12 0 17.302 3.438 21.8 8.207 23.387c.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
+                </svg>
+            </a>
+            <a href="https://www.tiktok.com/@jojojubah" target="_blank" class="nav-item social-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="#333" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.10z"/>
+                </svg>
+            </a>
+            <a href="https://x.com/jojojubah" target="_blank" class="nav-item social-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="#333" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                </svg>
+            </a>
+            <a href="https://www.youtube.com/@JojoJubah" target="_blank" class="nav-item social-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="#333" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                </svg>
+            </a>
+        </div>
+        <div class="nav-section footer-right" id="settings-toggle">
+            <div class="nav-item settings-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="12" cy="12" r="3" stroke="#333" stroke-width="2"/>
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" stroke="#333" stroke-width="2"/>
+                </svg>
+            </div>
+        </div>
+    </div>
+
+    <!-- Info popup outside blurred parent -->
+    <div class="info-popup" id="info-popup">
+        <div class="info-item">© 2025 JojoJubah. All rights reserved</div>
+        <div class="info-item">Made with ♥ using modern web technologies</div>
+        <div class="info-item">Version 1.0.0</div>
+    </div>
+
+    <!-- Settings popup outside blurred parent -->
+    <div class="settings-popup" id="settings-popup">
+        <div class="settings-item" id="theme-toggle">Theme: Light Mode</div>
+        <div class="settings-item">Language: English</div>
+        <div class="settings-item">Animations: Enabled</div>
+        <div class="settings-item" id="cookie-preferences">Cookie Preferences</div>
+    </div>
+
+    <!-- Cookie Consent Banner -->
+    <div id="cookieConsentBanner" class="cookie-consent-banner" style="display: none;">
+        <p>
+            <svg class="cookie-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9 16H9.01M12 11H12.01M7 10H7.01M15 16H15.01M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C12 5.76142 13.7909 8 16 8C16 10.2091 18.2386 12 21 12Z" stroke="#333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <a href="#" id="learnMoreBtn">Learn more</a>
+        </p>
+        <div class="cookie-buttons">
+            <button id="acceptCookies" class="cookie-btn accept">Accept All</button>
+            <button id="declineCookies" class="cookie-btn decline">Decline</button>
+        </div>
+    </div>
+
+    <!-- Cookie Preferences Modal -->
+    <div id="cookieModal" class="cookie-modal" style="display: none;">
+        <div class="cookie-modal-content">
+            <div class="cookie-modal-header">
+                <h3>Cookie Preferences</h3>
+                <button id="closeCookieModal" class="cookie-modal-close">&times;</button>
+            </div>
+
+            <div class="cookie-modal-body">
+                <div class="cookie-category">
+                    <div class="cookie-category-header">
+                        <span class="cookie-category-title">Necessary</span>
+                        <span class="cookie-category-status always-on">Always On</span>
+                    </div>
+                    <p class="cookie-category-desc">Essential cookies for site functionality and security.</p>
+                </div>
+
+                <div class="cookie-category">
+                    <div class="cookie-category-header">
+                        <span class="cookie-category-title">Performance & Analytics</span>
+                        <label class="cookie-toggle">
+                            <input type="checkbox" id="analyticsToggle">
+                            <span class="cookie-toggle-slider"></span>
+                        </label>
+                    </div>
+                    <p class="cookie-category-desc">Help us understand which content you find most helpful (Google Analytics).</p>
+                </div>
+
+                <div class="cookie-category disabled">
+                    <div class="cookie-category-header">
+                        <span class="cookie-category-title">Advertising</span>
+                        <span class="cookie-category-status coming-soon">Coming Soon</span>
+                    </div>
+                    <p class="cookie-category-desc">Personalized ads and marketing (not currently implemented).</p>
+                </div>
+            </div>
+
+            <div class="cookie-modal-footer">
+                <button id="saveCookiePreferences" class="cookie-save-btn">Save Preferences</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script src="bitcoin-game.js"></script>
+    <script src="cookie-manager.js"></script>
+</body>
+</html>

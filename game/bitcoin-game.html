@@ -1,0 +1,1148 @@
+<!DOCTYPE html>
+<!-- Y3JlYXRlZCBieSBKb2pvSnViYWggMjAyNQ== -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>₿itcoin Runner</title>
+    <style>
+        canvas {
+            border: 1px solid black;
+            display: block;
+            margin: 0 auto;     /* keep horizontal centering */
+            /* Remove the vertical shift: */
+            position: static;
+            top: auto;
+            transform: none;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #000;
+            margin: 0;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            touch-action: none; /* prevent browser gestures interfering with taps */
+        }
+
+        #topScore {
+            font-size: 18px;
+            color: #fff;
+        }
+
+        /* Menu Overlay Styling */
+        #menuOverlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 16px;
+            color: white;
+            z-index: 10;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        #menuOverlay h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #ffd700, #ffed4a, #f093fb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        #menuOverlay button {
+            display: block;
+            margin: 15px auto;
+            padding: 12px 30px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            transition: all 0.3s ease;
+            min-width: 200px;
+        }
+
+        #menuOverlay button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+        }
+
+        #brandLogo {
+            margin-top: 20px;
+            width: 60px;
+            height: 60px;
+            cursor: pointer;
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+        }
+
+        #brandLogo:hover {
+            transform: scale(1.1);
+        }
+
+        /* In-Game Pause Button */
+        #pauseButton {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: rgba(0, 0, 0, 0.7);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: white;
+            cursor: pointer;
+            z-index: 5;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        #pauseButton:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.6);
+            transform: scale(1.05);
+        }
+
+        #gameCanvas {
+            display: block;
+            cursor: pointer;
+            touch-action: none;
+            pointer-events: auto;
+        }
+
+    </style>
+</head>
+<body>
+    <canvas id="gameCanvas"></canvas>
+
+    <!-- Menu Overlay -->
+    <div id="menuOverlay">
+        <h1>₿itcoin Runner</h1>
+        <button onclick="startGame()">🎮 Play</button>
+        <button onclick="changeSkin()">🎨 Change Skin</button>
+        <button onclick="showLeaderboard()">🏆 Leaderboard</button>
+        <button onclick="resumeGame()" id="resumeButton" style="display: none;">▶️ Resume</button>
+        <br>
+        <img src="../favicon.png" alt="JojoJubah Labs" id="brandLogo" onclick="window.open('../index.html','_blank')">
+        <p style="font-size: 12px; margin-top: 10px; opacity: 0.8;">by JojoJubah Labs</p>
+    </div>
+
+    <!-- In-Game Pause Button -->
+    <div id="pauseButton" onclick="openPauseMenu()" style="display: none;">
+        ⏸️
+    </div>
+
+    <script type="module">
+        // Import Firebase functions directly from Firebase CDN
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+        import { getAuth } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDoc, getDocs, collection, query, orderBy, limit, runTransaction } 
+            from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCBnpzb54f0WbeIDgvdj4T0HRb3a2NdCgY",
+            authDomain: "jojojubah-f2996.firebaseapp.com",
+            projectId: "jojojubah-f2996",
+            storageBucket: "jojojubah-f2996.firebasestorage.app",
+            messagingSenderId: "160250947651",
+            appId: "1:160250947651:web:7e30c9f67a2e04cc270cf6",
+            measurementId: "G-XC16XPJ48T"
+        };
+
+        // Initialize Firebase again inside iframe
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        let canvasWidth;
+        if (window.innerWidth > 800) {
+          // Desktop: lock width at 800px
+          canvasWidth = 800;
+        } else {
+          // Mobile: use 95% of viewport width, minimum 240px to prevent tiny canvases
+          canvasWidth = Math.max(window.innerWidth * 0.95, 240);
+        }
+
+        let canvasHeight;
+        if (window.innerHeight > 600) {
+          // Desktop: lock height at 400px
+          canvasHeight = 400;
+        } else {
+          // Mobile: use 60% of viewport height
+          canvasHeight = window.innerHeight * 0.6;
+        }
+
+        // Apply calculated size to canvas
+        canvas.width = canvasWidth;
+        canvas.height = canvasHeight;
+
+        // Game Variables
+        const groundHeight = canvasHeight - 50;
+        const player = {
+            x: 50,
+            y: groundHeight - 20,
+            width: 20,
+            height: 20,
+            dy: 0,
+            jump: -12,
+            gravity: 0.5,
+            jumpsLeft: 2,
+            colorProgress: 0,
+            colorDirection: 1, // 1 for increasing, -1 for decreasing
+        };
+
+        let obstacles = [];
+        let coins = [];
+        let fragments = [];
+        let glitchCoin = null;
+        let floatingTexts = [];
+        let score = 0;
+        let level = 1;
+        let topScore = parseInt(localStorage.getItem('topScore')) || 0;
+        let isGameOver = false;
+        let gameOverShown = false;
+        let speed = Math.max(3, canvasWidth / 300);
+        let gameStarted = false;
+        let frameCount = 0;
+        let paused = false;
+
+        let glitchActive = false;
+        let glitchTimer = 0;
+
+        let groundOffset = 0;
+
+        const coinSymbols = ['£', '₿', '€'];
+
+        // HD-2D Parallax Stars for Background
+        function makeStars(count, speed, blur, color) {
+            return Array.from({ length: count }, () => ({
+                x: Math.random() * canvasWidth,
+                y: Math.random() * canvasHeight,
+                size: Math.random() * 2 + 1,
+                speed: speed,
+                blur: blur,
+                color: color
+            }));
+        }
+
+        const farStars = makeStars(40, 0.2, 6, '#888');
+        const midStars = makeStars(30, 0.5, 3, '#bbb');  
+        const nearStars = makeStars(20, 1.0, 0, '#fff');
+
+        // Ground Objects
+        let groundObjects = [];
+
+        // Element Colors and Glow Effects
+        let obstacleColor;
+        let coinColor;
+        let obstacleGlow;
+        let coinGlow;
+        let playerGlow;
+
+        // Colors for player transition
+        const colorStart = '#0000FF'; // Blue
+        const colorEnd = '#808080';   // Grey
+
+        // Player Skins System
+        const playerSkins = [
+            { name: "Blue Circle", draw: (x, y, size) => {
+                ctx.fillStyle = "blue";
+                ctx.beginPath();
+                ctx.arc(x, y, size/2, 0, Math.PI*2);
+                ctx.fill();
+            }},
+            { name: "Red Square", draw: (x, y, size) => {
+                ctx.fillStyle = "red";
+                ctx.fillRect(x-size/2, y-size/2, size, size);
+            }},
+            { name: "Neon Triangle", draw: (x, y, size) => {
+                ctx.fillStyle = "lime";
+                ctx.beginPath();
+                ctx.moveTo(x, y - size/2);
+                ctx.lineTo(x - size/2, y + size/2);
+                ctx.lineTo(x + size/2, y + size/2);
+                ctx.closePath();
+                ctx.fill();
+            }},
+            { name: "Golden Circle", draw: (x, y, size) => {
+                ctx.fillStyle = "gold";
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = "gold";
+                ctx.beginPath();
+                ctx.arc(x, y, size/2, 0, Math.PI*2);
+                ctx.fill();
+                ctx.shadowBlur = 0;
+                ctx.shadowColor = 'transparent';
+            }}
+        ];
+        let selectedSkin = 0;
+
+        // Sound effect for coin collection
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+        function playCoinSound() {
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            oscillator.type = 'square';
+            oscillator.frequency.setValueAtTime(1000, audioContext.currentTime);
+            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime); // Reduced volume
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            oscillator.start();
+            oscillator.stop(audioContext.currentTime + 0.1);
+        }
+
+        // New function for glitch coin sound effect
+        function playGlitchCoinSound() {
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            const now = audioContext.currentTime;
+
+            oscillator.type = 'sawtooth';
+            oscillator.frequency.setValueAtTime(200, now);
+            oscillator.frequency.exponentialRampToValueAtTime(800, now + 0.2);
+            gainNode.gain.setValueAtTime(0.5, now);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.2);
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            oscillator.start(now);
+            oscillator.stop(now + 0.2);
+        }
+
+        // Function to get a random HSL color
+        function getRandomColor() {
+            const h = Math.floor(Math.random() * 360);
+            const s = 100;
+            const l = 50;
+            return `hsl(${h}, ${s}%, ${l}%)`;
+        }
+
+        // HD-2D Parallax Layer Drawing
+        function drawParallaxLayer(stars) {
+            stars.forEach(star => {
+                ctx.save();
+                ctx.shadowBlur = star.blur;
+                ctx.shadowColor = star.color;
+                ctx.fillStyle = star.color;
+                ctx.beginPath();
+                ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+
+                star.x -= star.speed;
+                if (star.x < 0) star.x = canvasWidth;
+            });
+        }
+
+        // Draw Background with HD-2D Effects
+        function drawBackground() {
+            // Original gradient sky colors restored
+            const gradient = ctx.createLinearGradient(0, 0, 0, canvasHeight);
+            gradient.addColorStop(0, '#0f0f5e'); // Original light blue
+            gradient.addColorStop(1, '#01012c'); // Original dark blue
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Draw parallax star layers (far to near)
+            drawParallaxLayer(farStars);
+            drawParallaxLayer(midStars);
+            drawParallaxLayer(nearStars);
+        }
+
+        // Generate Ground Objects
+        function generateGroundObjects() {
+            // Randomly decide whether to add a new object
+            if (Math.random() < 0.1) { // Adjust frequency here
+                let newObject = {
+                    x: canvas.width + Math.random() * canvas.width,
+                    y: groundHeight,
+                    type: '',
+                    size: Math.random() * 20 + 10,
+                };
+
+                const objectType = Math.random();
+                if (objectType < 0.5) {
+                    newObject.type = 'crater';
+                } else {
+                    newObject.type = 'rock';
+                }
+
+                groundObjects.push(newObject);
+            }
+        }
+
+        // Draw Ground with HD-2D Soft Lighting
+        function drawGround() {
+            groundOffset -= speed;
+            if (groundOffset <= -canvasWidth) groundOffset = 0;
+
+            // Base ground layer - solid moon gray
+            ctx.fillStyle = '#444'; // Solid moon gray (restored original)
+            for (let i = 0; i <= 1; i++) {
+                ctx.fillRect(groundOffset + i * canvasWidth, groundHeight, canvasWidth, canvasHeight - groundHeight);
+            }
+
+            // Add soft lighting gradient overlay
+            const lightingGradient = ctx.createLinearGradient(0, groundHeight, 0, canvasHeight);
+            lightingGradient.addColorStop(0, 'rgba(255,255,255,0.1)');
+            lightingGradient.addColorStop(1, 'rgba(0,0,0,0.8)');
+            ctx.fillStyle = lightingGradient;
+            for (let i = 0; i <= 1; i++) {
+                ctx.fillRect(groundOffset + i * canvasWidth, groundHeight, canvasWidth, canvasHeight - groundHeight);
+            }
+
+            // Draw ground objects
+            groundObjects = groundObjects.filter((obj) => {
+                obj.x -= speed;
+                if (obj.x + obj.size < 0) return false;
+
+                if (obj.type === 'crater') {
+                    ctx.fillStyle = '#333';
+                    ctx.beginPath();
+                    ctx.arc(obj.x, obj.y + 10, obj.size, 0, Math.PI, true);
+                    ctx.fill();
+                } else if (obj.type === 'rock') {
+                    ctx.fillStyle = '#555';
+                    ctx.beginPath();
+                    ctx.ellipse(obj.x, obj.y + 10, obj.size / 2, obj.size / 3, 0, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+
+                return true;
+            });
+        }
+
+        // Draw Player with HD-2D Effects and Selected Skin
+        function drawPlayer() {
+            const centerX = player.x + player.width/2;
+            const centerY = player.y + player.height/2;
+            
+            // Draw soft shadow beneath player (only when on ground)
+            const isOnGround = player.y >= groundHeight - player.height;
+            if (isOnGround) {
+                ctx.save();
+                ctx.fillStyle = 'rgba(0,0,0,0.5)';
+                ctx.beginPath();
+                ctx.ellipse(centerX, centerY + 15, 15, 6, 0, 0, Math.PI * 2); // Smaller and closer shadow
+                ctx.fill();
+                ctx.restore();
+            }
+
+            // Use the selected skin to draw the player
+            playerSkins[selectedSkin].draw(centerX, centerY, player.width);
+
+            // Add bloom effect around player
+            ctx.save();
+            ctx.shadowBlur = 25;
+            ctx.shadowColor = 'rgba(100,150,255,0.8)';
+            ctx.strokeStyle = 'rgba(100,150,255,0.5)';
+            ctx.lineWidth = 8;
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, player.width/2 + 5, 0, Math.PI * 2);
+            ctx.stroke();
+            ctx.restore();
+        }
+
+        // Function to interpolate between two hex colors
+        function interpolateColor(color1, color2, factor) {
+            const c1 = hexToRgb(color1);
+            const c2 = hexToRgb(color2);
+            const r = Math.round(c1.r + (c2.r - c1.r) * factor);
+            const g = Math.round(c1.g + (c2.g - c1.g) * factor);
+            const b = Math.round(c1.b + (c2.b - c1.b) * factor);
+            return `rgb(${r}, ${g}, ${b})`;
+        }
+
+        // Helper function to convert hex color to RGB
+        function hexToRgb(hex) {
+            const bigint = parseInt(hex.replace('#', ''), 16);
+            const r = (bigint >> 16) & 255;
+            const g = (bigint >> 8) & 255;
+            const b = bigint & 255;
+            return { r, g, b };
+        }
+
+        // Handle Player Movement
+        function handlePlayerMovement() {
+            player.y += player.dy;
+            player.dy += player.gravity;
+            if (player.y > groundHeight - player.height) {
+                player.y = groundHeight - player.height;
+                player.dy = 0;
+                player.jumpsLeft = 2; // Reset jumps on landing
+            }
+        }
+
+        // Handle Obstacles
+        function handleObstacles() {
+            if (!glitchActive && Math.random() < 0.02) {
+                const height = Math.random() * 30 + 20;
+                obstacles.push({ x: canvas.width, y: groundHeight - height, width: 20, height });
+            }
+
+            obstacles = obstacles.filter((obstacle) => {
+                // HD-2D gradient using original dynamic colors
+                const gradient = ctx.createLinearGradient(obstacle.x, obstacle.y, obstacle.x + obstacle.width, obstacle.y + obstacle.height);
+                gradient.addColorStop(0, obstacleColor || '#ff3300');
+                gradient.addColorStop(1, 'rgba(0,0,0,0.6)'); // Darker version for depth
+                ctx.fillStyle = gradient;
+                ctx.fillRect(obstacle.x, obstacle.y, obstacle.width, obstacle.height);
+
+                // HD-2D Glow effect using original dynamic colors
+                ctx.save();
+                ctx.shadowBlur = obstacleGlow || 15;
+                ctx.shadowColor = obstacleColor || '#ff6600';
+                ctx.strokeStyle = obstacleColor || 'rgba(255,100,0,0.7)';
+                ctx.lineWidth = 4;
+                ctx.strokeRect(obstacle.x, obstacle.y, obstacle.width, obstacle.height);
+                ctx.restore();
+
+                obstacle.x -= speed;
+
+                // Collision detection
+                if (
+                    player.x < obstacle.x + obstacle.width &&
+                    player.x + player.width > obstacle.x &&
+                    player.y < obstacle.y + obstacle.height &&
+                    player.y + player.height > obstacle.y
+                ) {
+                    screenShake();
+                    isGameOver = true;
+                }
+
+                return obstacle.x + obstacle.width > 0;
+            });
+        }
+
+        // Handle Coins
+        function handleCoins() {
+            if (Math.random() < 0.02) {
+                coins.push({
+                    x: canvas.width,
+                    y: Math.random() * (groundHeight - 100) + 50,
+                    symbol: coinSymbols[Math.floor(Math.random() * coinSymbols.length)],
+                    size: 15,
+                });
+            }
+
+            coins = coins.filter((coin) => {
+                const centerX = coin.x + 7.5;
+                const centerY = coin.y + 7.5;
+                const radius = 7.5;
+
+                // HD-2D Glass halo effect using original dynamic glow
+                ctx.save();
+                ctx.shadowBlur = coinGlow;
+                ctx.shadowColor = coinColor;
+                ctx.fillStyle = 'rgba(255,255,255,0.1)';
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, radius + 3, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+
+                // HD-2D Radial gradient fill using original dynamic neon colors
+                const gradient = ctx.createRadialGradient(centerX - 3, centerY - 3, 2, centerX, centerY, radius);
+                gradient.addColorStop(0, 'rgba(255,255,255,0.7)');
+                gradient.addColorStop(0.4, coinColor); // Use the dynamic neon color directly
+                gradient.addColorStop(1, 'rgba(0,0,0,0.4)');
+                ctx.fillStyle = gradient;
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Draw coin symbol with better contrast
+                ctx.fillStyle = 'black';
+                ctx.font = 'bold 10px Arial';
+                const textWidth = ctx.measureText(coin.symbol).width;
+                ctx.fillText(coin.symbol, centerX - textWidth / 2, centerY + 3);
+
+                coin.x -= speed;
+
+                // Collect coin
+                if (
+                    player.x < coin.x + coin.size &&
+                    player.x + player.width > coin.x &&
+                    player.y < coin.y + coin.size &&
+                    player.y + player.height > coin.y
+                ) {
+                    playCoinSound();
+                    score++;
+
+                    // Add floating +1 effect
+                    floatingTexts.push({
+                        x: coin.x,
+                        y: coin.y,
+                        text: "+1",
+                        life: 40 // frames before disappearing
+                    });
+
+                    // Update top score
+                    if (score > topScore) {
+                        topScore = score;
+                        localStorage.setItem('topScore', topScore);
+                    }
+
+                    // Level up and increase speed
+                    if (score % 8 === 0) {
+                        level++;
+                        speed += 0.5;
+
+                        // Randomly change colors of elements
+                        obstacleColor = getRandomColor();
+                        coinColor = getRandomColor();
+
+                        // Randomly set glow effects
+                        obstacleGlow = Math.random() * 20;
+                        coinGlow = Math.random() * 20;
+                        playerGlow = Math.random() * 20;
+                    }
+
+                    // Add fragments for animation
+                    for (let i = 0; i < 5; i++) {
+                        fragments.push({
+                            x: coin.x,
+                            y: coin.y,
+                            dx: Math.random() * 4 - 2,
+                            dy: Math.random() * -4,
+                            size: 3,
+                            life: 30,
+                            color: coinColor, // Use current coin color
+                        });
+                    }
+                    return false;
+                }
+
+                return true;
+            });
+        }
+
+        // Draw Fragments
+        function drawFragments() {
+            fragments = fragments.filter((fragment) => {
+                ctx.fillStyle = fragment.color || 'gold';
+                ctx.fillRect(fragment.x, fragment.y, fragment.size, fragment.size);
+                fragment.x += fragment.dx;
+                fragment.y += fragment.dy;
+                fragment.dy += 0.1; // Gravity
+                return --fragment.life > 0;
+            });
+        }
+
+        // Draw Floating +1 Texts
+        function drawFloatingTexts() {
+            floatingTexts = floatingTexts.filter((t) => {
+                ctx.fillStyle = "white";
+                ctx.font = "bold 14px Arial";
+                ctx.globalAlpha = t.life / 40; // fade out
+                ctx.fillText(t.text, t.x, t.y);
+                ctx.globalAlpha = 1;
+                t.y -= 0.5;   // float upward
+                t.life--;
+                return t.life > 0;
+            });
+        }
+
+        // Screen Shake Effect
+        function screenShake(intensity = 5, duration = 300) {
+            let start = performance.now();
+            function shake(time) {
+                let elapsed = time - start;
+                if (elapsed < duration) {
+                    let dx = (Math.random() - 0.5) * intensity;
+                    let dy = (Math.random() - 0.5) * intensity;
+                    ctx.setTransform(1, 0, 0, 1, dx, dy);
+                    requestAnimationFrame(shake);
+                } else {
+                    ctx.setTransform(1, 0, 0, 1, 0, 0); // reset transform
+                }
+            }
+            requestAnimationFrame(shake);
+        }
+
+        // Draw Score and Level
+        function drawScoreAndLevel() {
+            ctx.fillStyle = 'white';
+            ctx.font = '20px Arial';
+            ctx.fillText(`Score: ${score}`, 10, 30); // Top-left corner
+            ctx.fillText(`Level: ${level}`, canvas.width - 100, 30); // Top-right corner
+        }
+
+        // Spawn Glitch Coin
+        function spawnGlitchCoin() {
+            if (!glitchActive && Math.random() < 0.002 && !glitchCoin) { // Reduced spawn rate
+                glitchCoin = { x: canvas.width, y: Math.random() * (groundHeight - 100) + 50, size: 30, pulse: 0 };
+            }
+        }
+
+        // Handle Glitch Coin
+        function handleGlitchCoin() {
+            if (!glitchCoin) return;
+
+            if (glitchCoin.collected) {
+                // Animate glitch coin into multiple colours
+                glitchCoin.animationFrame++;
+
+                // Animate for 30 frames
+                if (glitchCoin.animationFrame > 30) {
+                    glitchCoin = null;
+                    return;
+                }
+
+                // Draw the glitch coin with changing colors
+                glitchCoin.pulse = Math.sin(frameCount / 10) * 5 + 30;
+                ctx.fillStyle = `hsl(${glitchCoin.animationFrame * 12}, 100%, 50%)`;
+                ctx.beginPath();
+                ctx.arc(glitchCoin.x + 15, glitchCoin.y + 15, glitchCoin.pulse / 2, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Draw large BTC symbol
+                ctx.fillStyle = 'black';
+                ctx.font = 'bold 18px Arial';
+                const textWidth = ctx.measureText('₿').width;
+                ctx.fillText('₿', glitchCoin.x + 15 - textWidth / 2, glitchCoin.y + 22);
+
+            } else {
+                // Pulse animation for glitch coin
+                glitchCoin.pulse = Math.sin(frameCount / 10) * 5 + 30;
+
+                ctx.fillStyle = 'lime';
+                ctx.beginPath();
+                ctx.arc(glitchCoin.x + 15, glitchCoin.y + 15, glitchCoin.pulse / 2, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Draw large BTC symbol
+                ctx.fillStyle = 'black';
+                ctx.font = 'bold 18px Arial';
+                const textWidth = ctx.measureText('₿').width;
+                ctx.fillText('₿', glitchCoin.x + 15 - textWidth / 2, glitchCoin.y + 22);
+
+                glitchCoin.x -= speed;
+
+                if (
+                    player.x < glitchCoin.x + glitchCoin.size &&
+                    player.x + player.width > glitchCoin.x &&
+                    player.y < glitchCoin.y + glitchCoin.size &&
+                    player.y + player.height > glitchCoin.y
+                ) {
+                    playGlitchCoinSound(); // Play glitch coin sound
+                    glitchActive = true;
+                    glitchTimer = 300; // 5 seconds at 60 FPS
+                    obstacles = [];
+
+                    glitchCoin.collected = true;
+                    glitchCoin.animationFrame = 0;
+
+                    // Add multi-coloured fragments for animation
+                    for (let i = 0; i < 20; i++) {
+                        fragments.push({
+                            x: glitchCoin.x + glitchCoin.size / 2,
+                            y: glitchCoin.y + glitchCoin.size / 2,
+                            dx: Math.random() * 6 - 3,
+                            dy: Math.random() * -6,
+                            size: 4,
+                            life: 40,
+                            color: `hsl(${Math.random() * 360}, 100%, 50%)`,
+                        });
+                    }
+                }
+
+                if (glitchCoin && glitchCoin.x < -30) glitchCoin = null;
+            }
+        }
+
+        // Glitch Effect
+        function drawGlitchEffect() {
+            if (glitchActive) {
+                ctx.strokeStyle = `rgba(0, 255, 0, ${Math.sin(frameCount / 5) * 0.5 + 0.5})`;
+                ctx.lineWidth = 5;
+                ctx.strokeRect(0, 0, canvas.width, canvas.height);
+            }
+        }
+
+        // Game Loop
+        function gameLoop() {
+            if (paused) {
+                return; // Don't update game when paused
+            }
+            
+            if (isGameOver) {
+                if (!gameOverShown) {
+                    gameOverShown = true;        // ✅ show it only once
+                    showGameOverOverlay();
+                }
+                return;
+            }
+
+            if (!gameStarted) {
+                // Don't show anything - menu overlay handles this
+                return;
+            }
+
+            frameCount++;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            drawBackground();
+            generateGroundObjects();
+            drawGround();
+            drawPlayer();
+            handlePlayerMovement();
+            handleObstacles();
+            handleCoins();
+            drawFragments();
+            drawFloatingTexts();
+            spawnGlitchCoin();
+            handleGlitchCoin();
+            drawGlitchEffect();
+            drawScoreAndLevel();
+
+            if (glitchActive) {
+                glitchTimer--;
+                if (glitchTimer <= 0) glitchActive = false;
+            }
+
+            // Update player color progress
+            player.colorProgress += 0.01 * player.colorDirection;
+            if (player.colorProgress >= 1) {
+                player.colorProgress = 1;
+                player.colorDirection = -1;
+            } else if (player.colorProgress <= 0) {
+                player.colorProgress = 0;
+                player.colorDirection = 1;
+            }
+
+            requestAnimationFrame(gameLoop);
+        }
+
+        // Restart Game
+        function restartGame() {
+            score = 0;
+            level = 1;
+            obstacles = [];
+            coins = [];
+            fragments = [];
+            floatingTexts = [];
+            glitchCoin = null;
+            glitchActive = false;
+            speed = Math.max(3, canvasWidth / 300);
+            isGameOver = false;
+            gameOverShown = false;          // ✅ allow overlay next time
+            frameCount = 0;
+            gameStarted = true;
+            groundObjects = [];
+            player.colorProgress = 0;
+            player.colorDirection = 1;
+            player.y = groundHeight - player.height;
+            player.dy = 0;
+            player.jumpsLeft = 2;
+
+            // Initialize element colors and glow effects at the start
+            obstacleColor = getRandomColor();
+            coinColor = getRandomColor();
+            obstacleGlow = Math.random() * 20;
+            coinGlow = Math.random() * 20;
+            playerGlow = Math.random() * 20;
+
+            gameLoop();
+        }
+
+        // Menu System Functions
+        function startGame() {
+            if (!window.parent.firebaseServices || !window.parent.auth) {
+                console.log("⚠️ Firebase not ready, but allowing game start");
+            }
+            
+            document.getElementById("menuOverlay").style.display = "none";
+            document.getElementById("pauseButton").style.display = "flex";
+            document.getElementById("resumeButton").style.display = "none";
+            gameStarted = true;
+            paused = false;
+            restartGame();
+        }
+        window.startGame = startGame;
+
+        function changeSkin() {
+            selectedSkin = (selectedSkin + 1) % playerSkins.length;
+            // Show a temporary notification
+            const notification = document.createElement('div');
+            notification.textContent = `Skin: ${playerSkins[selectedSkin].name}`;
+            notification.style.cssText = `
+                position: absolute;
+                top: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: rgba(0,0,0,0.8);
+                color: white;
+                padding: 10px 20px;
+                border-radius: 20px;
+                z-index: 20;
+                font-size: 14px;
+            `;
+            document.body.appendChild(notification);
+            setTimeout(() => notification.remove(), 2000);
+        }
+        window.changeSkin = changeSkin;
+
+        // Firebase Leaderboard Functions - Add current high score tracking
+        let currentHighScore = 0;
+
+        async function loadHighScore() {
+            const user = window.parent.auth?.currentUser;
+            if (!user) return;
+            
+            try {
+                const userRef = doc(db, "leaderboard", user.uid);
+                const snapshot = await getDoc(userRef);
+                if (snapshot.exists()) {
+                    currentHighScore = snapshot.data().score;
+                    console.log("📊 Loaded existing high score:", currentHighScore);
+                }
+            } catch (error) {
+                console.error("❌ Error loading high score:", error);
+            }
+        }
+
+        async function saveScoreToLeaderboard(newScore) {
+            const user = window.parent.auth?.currentUser;
+            if (!user) {
+                console.log("⚠️ Cannot save score: not logged in");
+                return false;
+            }
+
+            const userRef = doc(db, "leaderboard", user.uid);
+
+            try {
+                await runTransaction(db, async (transaction) => {
+                    const userDoc = await transaction.get(userRef);
+                    const existingScore = userDoc.exists() ? userDoc.data().score : 0;
+                    
+                    if (newScore > existingScore) {
+                        transaction.set(userRef, {
+                            displayName: user.displayName,
+                            score: Number(newScore),
+                            timestamp: Date.now()
+                        }, { merge: true });
+                        
+                        currentHighScore = newScore;
+                        console.log(`✅ New high score saved: ${newScore} (previous: ${existingScore})`);
+                    } else {
+                        console.log(`📊 Score ${newScore} not saved (current high: ${existingScore})`);
+                    }
+                });
+                
+                return true;
+            } catch (error) {
+                console.error("❌ Error saving score:", error);
+                return false;
+            }
+        }
+
+
+        async function showLeaderboard() {
+            try {
+                const q = query(collection(db, "leaderboard"), orderBy("score", "desc"), limit(10));
+                const snap = await getDocs(q);
+
+                let leaderboardHTML = "<div style='text-align: center; color: white; padding: 30px;'>";
+                leaderboardHTML += "<h2 style='color: #ffd700; margin-bottom: 20px;'>🏆 Top Scores</h2>";
+                leaderboardHTML += "<ol style='list-style: none; padding: 0; font-size: 16px;'>";
+                
+                let rank = 1;
+                snap.forEach(docSnap => {
+                    const data = docSnap.data();
+                    const medal = rank === 1 ? '🥇' : rank === 2 ? '🥈' : rank === 3 ? '🥉' : `${rank}.`;
+                    leaderboardHTML += `<li style='margin: 10px 0; padding: 10px; background: rgba(255,255,255,0.1); border-radius: 8px;'>
+                        ${medal} ${data.displayName}: <strong>${data.score}</strong>
+                    </li>`;
+                    rank++;
+                });
+                
+                if (rank === 1) {
+                    leaderboardHTML += "<li style='margin: 20px 0; color: #ccc;'>No scores yet - be the first!</li>";
+                }
+                
+                leaderboardHTML += "</ol>";
+                leaderboardHTML += "<button onclick='backToMainMenu()' style='margin-top: 20px; padding: 10px 20px; background: #667eea; color: white; border: none; border-radius: 20px; cursor: pointer;'>Back</button>";
+                leaderboardHTML += "</div>";
+
+                document.getElementById("menuOverlay").innerHTML = leaderboardHTML;
+                document.getElementById("menuOverlay").style.display = "block";
+                
+            } catch (error) {
+                console.error("❌ Leaderboard error:", error);
+                alert(`🏆 Local High Score: ${topScore}\n\nOnline leaderboard unavailable.`);
+            }
+        }
+        window.showLeaderboard = showLeaderboard;
+
+        function openPauseMenu() {
+            if (!gameStarted) return;
+            
+            paused = true;
+            document.getElementById("menuOverlay").style.display = "block";
+            document.getElementById("resumeButton").style.display = "block";
+            document.getElementById("pauseButton").style.display = "none";
+        }
+
+        function resumeGame() {
+            paused = false;
+            document.getElementById("menuOverlay").style.display = "none";
+            document.getElementById("resumeButton").style.display = "none";
+            document.getElementById("pauseButton").style.display = "flex";
+            gameLoop();
+        }
+
+        // Game Over Screen with Dynamic Auth
+        async function showGameOverOverlay() {
+            const user = window.parent.auth?.currentUser;
+            let msg = `<p style="font-size: 1.5rem; margin-bottom: 10px;">Your Score: <strong style="color: #ffd700;">${score}</strong></p>`;
+            
+            // Show proper high score
+            let displayHighScore = Math.max(topScore, currentHighScore);
+            if (displayHighScore > 0) {
+                msg += `<p style="font-size: 1rem; margin-bottom: 20px; opacity: 0.8;">High Score: ${displayHighScore}</p>`;
+            }
+            
+            if (user) {
+                // Auto-save score for logged-in users
+                await saveScoreToLeaderboard(score);
+                msg += `<p style="color: #28a745; margin-bottom: 20px;">✅ Saved as ${user.displayName}</p>`;
+            } else {
+                msg += `<p style="color: #ffd700; margin-bottom: 20px;">🔑 Login above to save your score!</p>`;
+            }
+
+            document.getElementById("menuOverlay").innerHTML = `
+                <div style="text-align:center; color:white; padding:30px;">
+                    <h1 style="color:#ff6b6b; font-size: 2.5rem; margin-bottom: 20px;">💥 Game Over!</h1>
+                    ${msg}
+                    <button onclick="playAgain()" style="display: block; margin: 15px auto; padding: 12px 30px; font-size: 16px; font-weight: 600; border: none; border-radius: 25px; cursor: pointer; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; transition: all 0.3s ease; min-width: 200px;">🎮 Play Again</button>
+                    <button onclick="showLeaderboard()" style="display: block; margin: 15px auto; padding: 12px 30px; font-size: 16px; font-weight: 600; border: none; border-radius: 25px; cursor: pointer; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; transition: all 0.3s ease; min-width: 200px;">🏆 Leaderboard</button>
+                </div>
+            `;
+            document.getElementById("menuOverlay").style.display = "block";
+            document.getElementById("pauseButton").style.display = "none";
+        }
+        
+        // Game Over Action Functions  
+        function playAgain() {
+            location.reload();
+        }
+        
+        function backToMainMenu() {
+            // Reset to main menu
+            const mainMenuHTML = `
+                <h1>₿itcoin Runner</h1>
+                <button onclick="startGame()">🎮 Play</button>
+                <button onclick="changeSkin()">🎨 Change Skin</button>
+                <button onclick="showLeaderboard()">🏆 Leaderboard</button>
+                <button onclick="resumeGame()" id="resumeButton" style="display: none;">▶️ Resume</button>
+                <br>
+                <img src="../favicon.png" alt="JojoJubah Labs" id="brandLogo" onclick="window.open('../index.html','_blank')">
+                <p style="font-size: 12px; margin-top: 10px; opacity: 0.8;">by JojoJubah Labs</p>
+            `;
+            document.getElementById("menuOverlay").innerHTML = mainMenuHTML;
+            document.getElementById("menuOverlay").style.display = "block";
+            document.getElementById("pauseButton").style.display = "none";
+            isGameOver = false;
+            gameStarted = false;
+            paused = false;
+        }
+
+        // Start Game on Tap or Space
+        function handleInteraction() {
+            if (paused) {
+                // When paused, space/tap should resume
+                resumeGame();
+                return;
+            }
+            
+            if (!gameStarted || isGameOver) {
+                if (isGameOver) {
+                    // Let the game over screen handle this
+                    return;
+                }
+            } else if (player.jumpsLeft > 0) {
+                player.dy = player.jump;
+                player.jumpsLeft--;
+            }
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.code === 'Space') {
+                e.preventDefault();
+                handleInteraction();
+            }
+        });
+
+        // One unified input for tap/click anywhere in the iframe (canvas + black padding)
+        document.addEventListener('pointerdown', (e) => {
+          // 1) If the menu overlay is visible, ignore all taps/clicks
+          const menu = document.getElementById('menuOverlay');
+          const isMenuVisible = menu && menu.style.display !== 'none';
+          if (isMenuVisible) return;
+
+          // 2) Ignore clicks on UI controls (pause button, any <button>)
+          if (e.target.closest('#pauseButton')) return;
+          if (e.target.closest('button')) return;
+
+          // 3) Only react during active gameplay
+          if (!gameStarted || isGameOver || paused) return;
+
+          // 4) Jump (single source of truth)
+          e.preventDefault();
+          handleInteraction();
+        }, { passive: false });
+
+        // Initialize the game
+        obstacleColor = getRandomColor();
+        coinColor = getRandomColor();
+        obstacleGlow = Math.random() * 20;
+        coinGlow = Math.random() * 20;
+        playerGlow = Math.random() * 20;
+
+        // Start the game loop and show menu
+        gameLoop();
+        
+        // Make sure menu is visible on load
+        document.getElementById("menuOverlay").style.display = "block";
+
+        // Load high score if user is already logged in
+        if (window.parent.auth?.currentUser) {
+            loadHighScore();
+        }
+
+        // Listen for parent auth state changes to load high score
+        setInterval(() => {
+            const user = window.parent.auth?.currentUser;
+            if (user && currentHighScore === 0) {
+                loadHighScore();
+            }
+        }, 1000);
+
+        // Make remaining functions globally accessible for onclick handlers
+        window.openPauseMenu = openPauseMenu;
+        window.resumeGame = resumeGame;
+        window.playAgain = playAgain;
+        window.backToMainMenu = backToMainMenu;
+    </script>
+</body>
+</html>
