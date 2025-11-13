@@ -7,6 +7,7 @@
     <title>JojoJubah.com</title>
     <link rel="icon" type="image/png" href="assets/favicon.png">
     <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/jelly-switch@0.2.3/lib/index.min.js"></script>
 </head>
 <body class="lg-2">
     <div class="floating-nav-container">
@@ -117,6 +118,15 @@
             </div>
         </section>
 
+        <!-- Theme Toggle Section -->
+        <div class="theme-toggle-section">
+            <div class="theme-toggle-container">
+                <span class="theme-label">☀️ Light</span>
+                <jelly-switch id="theme-jelly-switch"></jelly-switch>
+                <span class="theme-label">🌙 Dark</span>
+            </div>
+        </div>
+
         <section id="about" class="about">
             <div class="container">
                 <div class="about-header">
@@ -138,9 +148,7 @@
                                 </div>
                                 Bio
                             </h3>
-                            <p>I'm a web developer and educator focused on AI-powered interfaces and lean, maintainable code for creators.
-                                Using vanilla HTML/CSS/JS, I ship lightweight full-stack sites and prototypes quickly.
-                                My expertise is in designing clean UI components, context-engineered chatbots, and serverless functions, ensuring fast, secure, and user-friendly experiences across devices and platforms.</p>
+                            <p>I'm a solo developer and "vanilla vibe coder" who builds AI-native tools, macOS apps, and lean web interfaces for myself first, then for other creators. I ship fast with simple stacks (SwiftUI, vanilla HTML/CSS/JS, Node/Firebase, and automation scripts with FFmpeg, yt-dlp, and friends) to turn messy ideas into clean, interactive systems. Lately I've been focused on context engineering, local AI workflows, and building private super tools that help creators work faster without giving up control.</p>
                         </div>
 
                         <div class="info-cards">
@@ -226,14 +234,60 @@
                                     <polyline points="8,6 2,12 8,18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
                             </div>
-                            <h3>Programming Languages</h3>
+                            <h3>Core Development</h3>
                         </div>
                         <div class="skill-tags">
-                            <span class="skill-tag">JavaScript</span>
-                            <span class="skill-tag">Batch</span>
+                            <span class="skill-tag">SwiftUI (macOS/iOS)</span>
+                            <span class="skill-tag">Node.js</span>
                             <span class="skill-tag">Python</span>
+                            <span class="skill-tag">HTML/CSS/JS</span>
+                            <span class="skill-tag">Firebase</span>
+                            <span class="skill-tag">CLI Tooling</span>
+                            <span class="skill-tag">Batch</span>
+                            <span class="skill-tag">Bash</span>
                             <span class="skill-tag">Rust</span>
-                            <span class="skill-tag">HTML/CSS</span>
+                        </div>
+                    </div>
+
+                    <div class="skill-category">
+                        <div class="category-header">
+                            <div class="category-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <h3>AI-Native Skills</h3>
+                        </div>
+                        <div class="skill-tags">
+                            <span class="skill-tag">Context Engineering</span>
+                            <span class="skill-tag">Claude Code</span>
+                            <span class="skill-tag">GPT-OSS</span>
+                            <span class="skill-tag">Agent Workflows</span>
+                            <span class="skill-tag">Multi-File Context Systems</span>
+                            <span class="skill-tag">Ollama</span>
+                            <span class="skill-tag">LM Studio</span>
+                        </div>
+                    </div>
+
+                    <div class="skill-category">
+                        <div class="category-header">
+                            <div class="category-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" stroke="currentColor" stroke-width="2"/>
+                                </svg>
+                            </div>
+                            <h3>Tools & Platforms</h3>
+                        </div>
+                        <div class="skill-tags">
+                            <span class="skill-tag">Xcode</span>
+                            <span class="skill-tag">VS Code</span>
+                            <span class="skill-tag">GitHub Pages</span>
+                            <span class="skill-tag">Git</span>
+                            <span class="skill-tag">OBS Studio</span>
+                            <span class="skill-tag">FFmpeg</span>
+                            <span class="skill-tag">yt-dlp</span>
+                            <span class="skill-tag">Firebase Console</span>
+                            <span class="skill-tag">Replit</span>
                         </div>
                     </div>
 
@@ -246,33 +300,15 @@
                                     <line x1="12" y1="17" x2="12" y2="21" stroke="currentColor" stroke-width="2"/>
                                 </svg>
                             </div>
-                            <h3>Frontend Development</h3>
+                            <h3>Frontend & Design</h3>
                         </div>
                         <div class="skill-tags">
                             <span class="skill-tag">React</span>
-                            <span class="skill-tag">HTML/CSS/JS</span>
                             <span class="skill-tag">Next.js</span>
                             <span class="skill-tag">Tailwind CSS</span>
-                        </div>
-                    </div>
-
-                    <div class="skill-category">
-                        <div class="category-header">
-                            <div class="category-icon">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <rect x="2" y="2" width="20" height="8" rx="2" ry="2" stroke="currentColor" stroke-width="2"/>
-                                    <rect x="2" y="14" width="20" height="8" rx="2" ry="2" stroke="currentColor" stroke-width="2"/>
-                                    <line x1="6" y1="6" x2="6" y2="6" stroke="currentColor" stroke-width="2"/>
-                                    <line x1="6" y1="18" x2="6" y2="18" stroke="currentColor" stroke-width="2"/>
-                                </svg>
-                            </div>
-                            <h3>Backend Development</h3>
-                        </div>
-                        <div class="skill-tags">
-                            <span class="skill-tag">Node.js</span>
-                            <span class="skill-tag">Express.js</span>
-                            <span class="skill-tag">Firebase</span>
-                            <span class="skill-tag">Serverless APIs</span>
+                            <span class="skill-tag">Figma</span>
+                            <span class="skill-tag">UI/UX Design</span>
+                            <span class="skill-tag">Interface Design</span>
                         </div>
                     </div>
 
@@ -285,30 +321,15 @@
                                     <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" stroke="currentColor" stroke-width="2"/>
                                 </svg>
                             </div>
-                            <h3>Databases</h3>
+                            <h3>Backend & Databases</h3>
                         </div>
                         <div class="skill-tags">
+                            <span class="skill-tag">Express.js</span>
+                            <span class="skill-tag">Serverless APIs</span>
                             <span class="skill-tag">MongoDB</span>
                             <span class="skill-tag">MySQL</span>
-                            <span class="skill-tag">Firebase</span>
                             <span class="skill-tag">Firestore</span>
-                        </div>
-                    </div>
-
-                    <div class="skill-category">
-                        <div class="category-header">
-                            <div class="category-icon">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" stroke="currentColor" stroke-width="2"/>
-                                </svg>
-                            </div>
-                            <h3>Tools & Technologies</h3>
-                        </div>
-                        <div class="skill-tags">
-                            <span class="skill-tag">Git</span>
-                            <span class="skill-tag">Claude</span>
-                            <span class="skill-tag">GPT</span>
-                            <span class="skill-tag">Replit</span>
+                            <span class="skill-tag">Cloud Functions</span>
                         </div>
                     </div>
 
@@ -319,13 +340,13 @@
                                     <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
                             </div>
-                            <h3>Design</h3>
+                            <h3>Creative & Product</h3>
                         </div>
                         <div class="skill-tags">
-                            <span class="skill-tag">Figma</span>
-                            <span class="skill-tag">UI/UX Design</span>
+                            <span class="skill-tag">Rapid Prototyping</span>
+                            <span class="skill-tag">YouTube Tech Content</span>
                             <span class="skill-tag">Wireframing</span>
-                            <span class="skill-tag">Prototyping</span>
+                            <span class="skill-tag">Product Design</span>
                         </div>
                     </div>
                 </div>
@@ -369,14 +390,14 @@
                         </div>
 
                         <div class="project-card youtube-video-card">
-                            <h3>AI-Powered Development Workflow</h3>
-                            <p>Watch my development process using AI tools and modern techniques to build efficient, scalable applications.</p>
+                            <h3>Build a Private Super Tool in 30 Minutes</h3>
+                            <p>Live vibe coding tutorial: watch a real-time build of a personal AI-powered productivity app from scratch. No gatekeeping, no fluff—packed with actionable steps, improvisational learning, and practical AI development skills.</p>
 
                             <!-- YouTube Video Container -->
                             <div class="video-container">
                                 <iframe
-                                    src="https://www.youtube.com/embed/TjYel8UL5aI?start=56"
-                                    title="AI-Powered Development Workflow"
+                                    src="https://www.youtube.com/embed/fsvKK3T68fY"
+                                    title="Build a Private Super Tool in 30 Minutes"
                                     frameborder="0"
                                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                                     allowfullscreen>
@@ -384,22 +405,22 @@
                             </div>
 
                             <div class="project-tags">
-                                <span class="project-tag">AI Development</span>
-                                <span class="project-tag">Workflow</span>
-                                <span class="project-tag">YouTube</span>
+                                <span class="project-tag">Live Coding</span>
+                                <span class="project-tag">AI Productivity</span>
+                                <span class="project-tag">OpenAI Codex</span>
                                 <span class="project-tag">Tutorial</span>
                             </div>
                         </div>
 
                         <div class="project-card youtube-video-card">
-                            <h3>Quick Development Tips</h3>
-                            <p>Short-form content showcasing rapid development techniques and coding tips for efficient programming.</p>
+                            <h3>Context-Aware Claude Code: Deep F*ing Learning</h3>
+                            <p>Transform Claude Code from basic to Ferrari-level precision in 2 minutes. Unlock the 24 Core Context Files that supercharge AI coding, slash development time, and gain practical control over context-aware workflows.</p>
 
-                            <!-- YouTube Shorts Video Container -->
-                            <div class="video-container shorts-container">
+                            <!-- YouTube Video Container -->
+                            <div class="video-container">
                                 <iframe
-                                    src="https://www.youtube.com/embed/kXA6Ktdqzos"
-                                    title="Quick Development Tips - YouTube Shorts"
+                                    src="https://www.youtube.com/embed/_2NT18nKTY8?start=81"
+                                    title="Context-Aware Claude Code: Deep F*ing Learning"
                                     frameborder="0"
                                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                                     allowfullscreen>
@@ -407,10 +428,10 @@
                             </div>
 
                             <div class="project-tags">
-                                <span class="project-tag">YouTube Shorts</span>
-                                <span class="project-tag">Development Tips</span>
-                                <span class="project-tag">Quick Tutorial</span>
-                                <span class="project-tag">Coding</span>
+                                <span class="project-tag">Claude AI</span>
+                                <span class="project-tag">Context Engineering</span>
+                                <span class="project-tag">AI Development</span>
+                                <span class="project-tag">Workflow Optimization</span>
                             </div>
                         </div>
                     </div>

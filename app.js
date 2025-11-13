@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const settingsToggle = document.getElementById('settings-toggle');
     const settingsPopup = document.getElementById('settings-popup');
     const themeToggle = document.getElementById('theme-toggle');
+    const jellySwitch = document.getElementById('theme-jelly-switch');
 
     function scrollToSection(sectionId) {
         const targetSection = document.getElementById(sectionId);
@@ -83,6 +84,11 @@ document.addEventListener('DOMContentLoaded', function() {
             themeToggle.textContent = isDark ? 'Theme: Dark Mode' : 'Theme: Light Mode';
         }
 
+        // Sync jelly switch state
+        if (jellySwitch) {
+            jellySwitch.checked = isDark;
+        }
+
         // Store preference in localStorage
         localStorage.setItem('darkMode', isDark);
     }
@@ -92,7 +98,13 @@ document.addEventListener('DOMContentLoaded', function() {
         const isDark = localStorage.getItem('darkMode') === 'true';
         if (isDark) {
             document.body.classList.add('dark-mode');
-            themeToggle.textContent = 'Theme: Dark Mode';
+            if (themeToggle) {
+                themeToggle.textContent = 'Theme: Dark Mode';
+            }
+        }
+        // Set jelly switch initial state
+        if (jellySwitch) {
+            jellySwitch.checked = isDark;
         }
     }
 
@@ -155,6 +167,15 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     } else {
         console.error('Theme toggle element not found');
+    }
+
+    // Jelly switch event listener
+    if (jellySwitch) {
+        jellySwitch.addEventListener('toggle', function(e) {
+            toggleDarkMode();
+        });
+    } else {
+        console.error('Jelly switch element not found');
     }
 
     document.addEventListener('click', function() {
