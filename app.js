@@ -5,6 +5,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const menuToggle = document.getElementById('menu-toggle');
     const dropdownMenu = document.getElementById('dropdown-menu');
     const dropdownItems = document.querySelectorAll('.dropdown-item');
+    const learnLiquidButton = document.querySelector('.learn-liquid-card .project-btn');
+    const learnLiquidToast = document.getElementById('learnLiquidToast');
+    let learnLiquidToastTimeout;
 
     // Footer elements
     const infoToggle = document.getElementById('info-toggle');
@@ -91,6 +94,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Store preference in localStorage
         localStorage.setItem('darkMode', isDark);
+    }
+
+    function showLearnLiquidToast() {
+        if (!learnLiquidToast) return;
+        learnLiquidToast.classList.add('visible');
+        learnLiquidToast.setAttribute('aria-hidden', 'false');
+        clearTimeout(learnLiquidToastTimeout);
+        learnLiquidToastTimeout = setTimeout(() => {
+            learnLiquidToast.classList.remove('visible');
+            learnLiquidToast.setAttribute('aria-hidden', 'true');
+        }, 4000);
     }
 
     // Load saved theme preference
@@ -197,6 +211,12 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     });
+
+    if (learnLiquidButton) {
+        learnLiquidButton.addEventListener('click', function() {
+            showLearnLiquidToast();
+        });
+    }
 
 
     window.addEventListener('resize', function() {
