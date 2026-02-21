@@ -1118,12 +1118,17 @@ body.dark-mode .reveal-email-btn {
     margin-bottom: 1rem;
 }
 
-.profile-image img {
+.profile-photo {
+    display: block;
     width: 130px;
     height: 130px;
+    margin: 0 auto;
     border-radius: 50%;
-    object-fit: cover;
     border: 3px solid #e9ecef;
+    background-image: url('assets/profile-photo.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 .gpa-badge {
