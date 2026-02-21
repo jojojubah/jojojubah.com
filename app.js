@@ -6,6 +6,13 @@ document.addEventListener('DOMContentLoaded', function() {
     const emailHidden = document.getElementById('emailHidden');
     const emailVisible = document.getElementById('emailVisible');
     const themeToggle = document.getElementById('themeToggle');
+    const sectionIds = ['home', 'about', 'skills', 'projects', 'contact'];
+    const sections = sectionIds
+        .map(function(id) { return document.getElementById(id); })
+        .filter(Boolean);
+    const visibleSections = new Map();
+    const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let activeSectionId = document.body.getAttribute('data-active-section') || 'home';
     let learnLiquidToastTimeout;
 
     const savedDarkMode = localStorage.getItem('darkMode');
@@ -32,6 +39,114 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     updateThemeToggleState();
+
+    function setActiveBackgroundSection(sectionId) {
+        if (!sectionId || sectionId === activeSectionId) return;
+        activeSectionId = sectionId;
+        document.body.setAttribute('data-active-section', sectionId);
+    }
+
+    function pickMostVisibleSection() {
+        let strongestId = '';
+        let strongestRatio = 0;
+        const currentRatio = visibleSections.get(activeSectionId) || 0;
+
+        visibleSections.forEach(function(ratio, sectionId) {
+            if (ratio > strongestRatio) {
+                strongestRatio = ratio;
+                strongestId = sectionId;
+            }
+        });
+
+        if (!strongestId && sections.length) {
+            strongestId = sections[0].id;
+        }
+
+        if (!strongestId) return;
+
+        if (strongestId === activeSectionId) {
+            return;
+        }
+
+        const minSwitchGain = 0.14;
+        if (strongestRatio >= currentRatio + minSwitchGain || currentRatio < 0.2) {
+            setActiveBackgroundSection(strongestId);
+        }
+    }
+
+    if (sections.length && !reducedMotionQuery.matches) {
+        const sectionObserver = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    visibleSections.set(entry.target.id, entry.intersectionRatio);
+                } else {
+                    visibleSections.delete(entry.target.id);
+                }
+            });
+
+            pickMostVisibleSection();
+        }, {
+            root: null,
+            rootMargin: '-18% 0px -45% 0px',
+            threshold: [0.1, 0.25, 0.4, 0.55, 0.7]
+        });
+
+        sections.forEach(function(section) {
+            sectionObserver.observe(section);
+        });
+    } else {
+        setActiveBackgroundSection('home');
+    }
+
+    const revealCardSelector = '.profile-card, .code-window, .info-card, .skill-category, .project-card, .title-card, .text-card';
+    const revealCards = Array.from(document.querySelectorAll(revealCardSelector));
+
+    if (revealCards.length) {
+        revealCards.forEach(function(card) {
+            card.classList.add('scroll-fade-card');
+        });
+
+        if (reducedMotionQuery.matches) {
+            revealCards.forEach(function(card) {
+                card.classList.add('is-visible');
+            });
+        } else {
+            const initialViewportTrigger = window.innerHeight * 0.92;
+            revealCards.forEach(function(card) {
+                if (card.getBoundingClientRect().top <= initialViewportTrigger) {
+                    card.classList.add('is-visible');
+                }
+            });
+
+            requestAnimationFrame(function() {
+                document.body.classList.add('js-reveal');
+            });
+
+            if ('IntersectionObserver' in window) {
+                const revealObserver = new IntersectionObserver(function(entries, observer) {
+                    entries.forEach(function(entry) {
+                        if (!entry.isIntersecting) return;
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    });
+                }, {
+                    root: null,
+                    rootMargin: '0px 0px -10% 0px',
+                    threshold: 0.12
+                });
+
+                revealCards.forEach(function(card) {
+                    if (!card.classList.contains('is-visible')) {
+                        revealObserver.observe(card);
+                    }
+                });
+            } else {
+                revealCards.forEach(function(card) {
+                    card.classList.add('is-visible');
+                });
+            }
+        }
+    }
 
     document.querySelectorAll('a[href^="#"]').forEach(function(link) {
         link.addEventListener('click', function(e) {
