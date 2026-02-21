@@ -5,18 +5,33 @@ document.addEventListener('DOMContentLoaded', function() {
     const revealEmailBtn = document.getElementById('revealEmail');
     const emailHidden = document.getElementById('emailHidden');
     const emailVisible = document.getElementById('emailVisible');
+    const themeToggle = document.getElementById('themeToggle');
     let learnLiquidToastTimeout;
 
     const savedDarkMode = localStorage.getItem('darkMode');
-    const useDarkMode = savedDarkMode === 'true' || (
-        savedDarkMode === null &&
-        window.matchMedia &&
-        window.matchMedia('(prefers-color-scheme: dark)').matches
-    );
+    const useDarkMode = savedDarkMode === 'true';
 
     if (useDarkMode) {
         document.body.classList.add('dark-mode');
     }
+
+    function updateThemeToggleState() {
+        if (!themeToggle) return;
+        const isDarkMode = document.body.classList.contains('dark-mode');
+        themeToggle.setAttribute('aria-checked', String(isDarkMode));
+        themeToggle.setAttribute('aria-label', isDarkMode ? 'Switch to light mode' : 'Switch to dark mode');
+        themeToggle.setAttribute('title', isDarkMode ? 'Light mode' : 'Dark mode');
+    }
+
+    if (themeToggle) {
+        themeToggle.addEventListener('click', function() {
+            const isDarkMode = document.body.classList.toggle('dark-mode');
+            localStorage.setItem('darkMode', String(isDarkMode));
+            updateThemeToggleState();
+        });
+    }
+
+    updateThemeToggleState();
 
     document.querySelectorAll('a[href^="#"]').forEach(function(link) {
         link.addEventListener('click', function(e) {
