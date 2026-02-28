@@ -677,10 +677,11 @@ body.dark-mode .site-nav-menu-button {
     right: 0;
     width: min(86vw, 340px);
     height: calc(100vh - var(--nav-height));
+    height: calc(100dvh - var(--nav-height));
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    padding: 1.1rem 1rem 1rem;
+    padding: 1.1rem 1rem calc(1.15rem + env(safe-area-inset-bottom));
     border-left: 1px solid rgba(0, 0, 0, 0.2);
     background: #ffffff;
     transform: translateX(100%);
@@ -1715,6 +1716,7 @@ body.dark-mode .toast-message {
 
     .site-nav-menu {
         width: min(100vw, 320px);
+        padding-bottom: calc(2.1rem + env(safe-area-inset-bottom));
     }
 
     .contact p {
