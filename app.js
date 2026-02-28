@@ -5,6 +5,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const revealEmailBtn = document.getElementById('revealEmail');
     const emailHidden = document.getElementById('emailHidden');
     const emailVisible = document.getElementById('emailVisible');
+    const siteNav = document.querySelector('.site-nav');
+    const navMenuToggle = document.getElementById('navMenuToggle');
+    const siteMenu = document.getElementById('siteMenu');
+    const siteMenuOverlay = document.getElementById('siteMenuOverlay');
     const themeToggle = document.getElementById('themeToggle');
     const sectionIds = ['home', 'about', 'skills', 'projects', 'contact'];
     const sections = sectionIds
@@ -20,6 +24,52 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (useDarkMode) {
         document.body.classList.add('dark-mode');
+    }
+
+    function closeNavMenu(options) {
+        const shouldReturnFocus = Boolean(options && options.returnFocus);
+        if (!siteNav || !navMenuToggle || !siteMenu || !siteMenuOverlay) return;
+        siteNav.classList.remove('menu-open');
+        document.body.classList.remove('site-menu-open');
+        navMenuToggle.setAttribute('aria-expanded', 'false');
+        navMenuToggle.setAttribute('aria-label', 'Open navigation menu');
+        siteMenu.setAttribute('aria-hidden', 'true');
+        siteMenuOverlay.setAttribute('aria-hidden', 'true');
+        if (shouldReturnFocus) {
+            navMenuToggle.focus();
+        }
+    }
+
+    function openNavMenu() {
+        if (!siteNav || !navMenuToggle || !siteMenu || !siteMenuOverlay) return;
+        siteNav.classList.add('menu-open');
+        document.body.classList.add('site-menu-open');
+        navMenuToggle.setAttribute('aria-expanded', 'true');
+        navMenuToggle.setAttribute('aria-label', 'Close navigation menu');
+        siteMenu.setAttribute('aria-hidden', 'false');
+        siteMenuOverlay.setAttribute('aria-hidden', 'false');
+    }
+
+    if (siteNav && navMenuToggle && siteMenu && siteMenuOverlay) {
+        siteMenu.setAttribute('aria-hidden', 'true');
+
+        navMenuToggle.addEventListener('click', function() {
+            if (siteNav.classList.contains('menu-open')) {
+                closeNavMenu({ returnFocus: true });
+            } else {
+                openNavMenu();
+            }
+        });
+
+        siteMenuOverlay.addEventListener('click', function() {
+            closeNavMenu({ returnFocus: true });
+        });
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key !== 'Escape') return;
+            if (!siteNav.classList.contains('menu-open')) return;
+            closeNavMenu({ returnFocus: true });
+        });
     }
 
     function updateThemeToggleState() {
@@ -156,6 +206,9 @@ document.addEventListener('DOMContentLoaded', function() {
             if (!target) return;
             e.preventDefault();
             target.scrollIntoView({ behavior: 'smooth' });
+            if (siteNav && siteNav.classList.contains('menu-open') && link.closest('.site-nav')) {
+                closeNavMenu();
+            }
         });
     });
 
