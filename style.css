@@ -1649,6 +1649,10 @@ body.dark-mode .briefings-nav-btn {
     overflow-x: auto;
     overscroll-behavior-x: contain;
     scroll-snap-type: x mandatory;
+    scroll-snap-stop: always;
+    scroll-behavior: smooth;
+    touch-action: pan-x;
+    -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
     -ms-overflow-style: none;
 }
@@ -1668,6 +1672,23 @@ body.dark-mode .briefings-nav-btn {
     scroll-snap-align: center;
     text-align: left;
     box-shadow: 0 12px 26px rgba(16, 24, 48, 0.06);
+    transform: translate3d(0, 0, 0) scale(0.982);
+    opacity: 0.84;
+    transition: transform 340ms cubic-bezier(0.22, 1, 0.36, 1), opacity 260ms ease, box-shadow 260ms ease, border-color 260ms ease;
+    will-change: transform, opacity;
+}
+
+.briefing-card.is-active {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 1;
+}
+
+.briefing-card.is-before {
+    transform: translate3d(-10px, 0, 0) scale(0.972);
+}
+
+.briefing-card.is-after {
+    transform: translate3d(10px, 0, 0) scale(0.972);
 }
 
 .briefing-card-video {
@@ -1706,13 +1727,24 @@ body.dark-mode .briefing-card {
 }
 
 .briefing-card:hover {
-    transform: translateY(-2px);
+    border-color: rgba(0, 0, 0, 0.32);
     box-shadow: 0 18px 30px rgba(16, 24, 48, 0.14);
 }
 
 .briefing-card-video:hover {
-    transform: none;
     box-shadow: none;
+}
+
+body.dark-mode .briefing-card:hover {
+    border-color: rgba(255, 255, 255, 0.45);
+}
+
+body.dark-mode .briefing-card {
+    opacity: 0.9;
+}
+
+body.dark-mode .briefing-card.is-active {
+    opacity: 1;
 }
 
 .briefing-card h3 {
@@ -1920,22 +1952,59 @@ body.briefing-modal-open {
     }
 
     .briefings-carousel {
-        padding: 0 2.2rem;
+        display: grid;
+        grid-template-columns: 34px minmax(0, 1fr) 34px;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0;
+        max-width: min(100%, 620px);
+        margin: 0 auto;
     }
 
     .briefings-carousel-videos {
-        padding: 0 2.55rem;
+        max-width: min(100%, 620px);
     }
 
     .briefings-carousel-shorts {
-        max-width: 390px;
-        padding: 0 1.85rem;
+        max-width: min(100%, 420px);
+    }
+
+    .briefings-nav-btn-side {
+        position: static;
+        top: auto;
+        left: auto;
+        right: auto;
+        transform: none;
+    }
+
+    .briefings-nav-btn-side:hover {
+        transform: none;
     }
 
     .briefings-nav-btn {
         width: 34px;
         height: 34px;
         font-size: 1.3rem;
+        padding: 0;
+    }
+
+    .briefings-rail {
+        grid-column: 2;
+        grid-auto-columns: 100%;
+        gap: 0.6rem;
+    }
+
+    .briefing-card {
+        padding: 0.64rem;
+        border-radius: 14px;
+    }
+
+    .briefing-card.is-before {
+        transform: translate3d(-6px, 0, 0) scale(0.976);
+    }
+
+    .briefing-card.is-after {
+        transform: translate3d(6px, 0, 0) scale(0.976);
     }
 
     .briefing-card-video {
@@ -1948,7 +2017,19 @@ body.briefing-modal-open {
     }
 
     .briefing-card-short {
-        max-width: min(100%, 316px);
+        max-width: min(100%, 286px);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .briefings-rail {
+        scroll-behavior: auto;
+    }
+
+    .briefing-card {
+        transform: none !important;
+        opacity: 1 !important;
+        transition: none !important;
     }
 }
 

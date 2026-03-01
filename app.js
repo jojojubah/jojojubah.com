@@ -18,7 +18,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const briefingModalTitle = document.getElementById('briefingModalTitle');
     const briefingModalOriginalLink = document.getElementById('briefingModalOriginalLink');
     const briefingModalCloseButtons = document.querySelectorAll('[data-briefing-close]');
-    const railAnimationFrames = new WeakMap();
+    const railStepCache = new WeakMap();
+    const railUiCache = new Map();
     const themeToggle = document.getElementById('themeToggle');
     const sectionIds = ['home', 'about', 'skills', 'youtube', 'projects', 'contact'];
     const sections = sectionIds
@@ -116,10 +117,32 @@ document.addEventListener('DOMContentLoaded', function() {
         document.body.classList.add('briefing-modal-open');
     }
 
-    function getRailStep(rail) {
+    function measureRailStep(rail) {
         const railStyles = window.getComputedStyle(rail);
         const gap = parseFloat(railStyles.columnGap || railStyles.gap || '0');
         return (rail.clientWidth || 1) + gap;
+    }
+
+    function getRailStep(rail) {
+        const cachedStep = railStepCache.get(rail);
+        if (cachedStep) return cachedStep;
+        const measuredStep = measureRailStep(rail);
+        railStepCache.set(rail, measuredStep);
+        return measuredStep;
+    }
+
+    function getRailUiRefs(railId) {
+        if (railUiCache.has(railId)) {
+            return railUiCache.get(railId);
+        }
+
+        const refs = {
+            progress: document.querySelector('[data-rail-progress="' + railId + '"]'),
+            prevButtons: Array.from(document.querySelectorAll('.briefings-nav-btn[data-rail-target="' + railId + '"][data-briefings-dir="prev"]')),
+            nextButtons: Array.from(document.querySelectorAll('.briefings-nav-btn[data-rail-target="' + railId + '"][data-briefings-dir="next"]'))
+        };
+        railUiCache.set(railId, refs);
+        return refs;
     }
 
     function getRailIndex(rail) {
@@ -131,6 +154,20 @@ document.addEventListener('DOMContentLoaded', function() {
         return Math.max(0, Math.min(cards.length - 1, rawIndex));
     }
 
+    function updateRailVisuals(rail) {
+        const cards = rail.querySelectorAll('.briefing-card');
+        if (!cards.length) return;
+        const activeIndex = getRailIndex(rail);
+
+        cards.forEach(function(card, index) {
+            const isActive = index === activeIndex;
+            card.classList.toggle('is-active', isActive);
+            card.classList.toggle('is-before', index < activeIndex);
+            card.classList.toggle('is-after', index > activeIndex);
+            card.setAttribute('aria-current', isActive ? 'true' : 'false');
+        });
+    }
+
     function updateRailUi(rail) {
         const railId = rail.id;
         if (!railId) return;
@@ -139,23 +176,21 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const maxIndex = cards.length - 1;
         const index = getRailIndex(rail);
-        const progress = document.querySelector('[data-rail-progress="' + railId + '"]');
+        const refs = getRailUiRefs(railId);
 
-        if (progress) {
-            progress.textContent = String(index + 1) + ' / ' + String(cards.length);
+        if (refs.progress) {
+            refs.progress.textContent = String(index + 1) + ' / ' + String(cards.length);
         }
 
-        document
-            .querySelectorAll('.briefings-nav-btn[data-rail-target="' + railId + '"][data-briefings-dir="prev"]')
-            .forEach(function(button) {
-                button.disabled = index <= 0;
-            });
+        refs.prevButtons.forEach(function(button) {
+            button.disabled = index <= 0;
+        });
 
-        document
-            .querySelectorAll('.briefings-nav-btn[data-rail-target="' + railId + '"][data-briefings-dir="next"]')
-            .forEach(function(button) {
-                button.disabled = index >= maxIndex;
-            });
+        refs.nextButtons.forEach(function(button) {
+            button.disabled = index >= maxIndex;
+        });
+
+        updateRailVisuals(rail);
     }
 
     function scrollRail(rail, direction) {
@@ -164,41 +199,10 @@ document.addEventListener('DOMContentLoaded', function() {
         const currentIndex = getRailIndex(rail);
         const targetIndex = Math.max(0, Math.min(cards.length - 1, currentIndex + (direction === 'prev' ? -1 : 1)));
         const step = getRailStep(rail);
-        const targetLeft = step * targetIndex;
-        const previousFrame = railAnimationFrames.get(rail);
-        if (previousFrame) {
-            cancelAnimationFrame(previousFrame);
-        }
-
-        const startLeft = rail.scrollLeft;
-        const distance = targetLeft - startLeft;
-        const duration = 430;
-        let startTime = 0;
-
-        function easeInOutCubic(progress) {
-            return progress < 0.5
-                ? 4 * progress * progress * progress
-                : 1 - Math.pow(-2 * progress + 2, 3) / 2;
-        }
-
-        function stepFrame(now) {
-            if (!startTime) startTime = now;
-            const elapsed = now - startTime;
-            const progress = Math.min(1, elapsed / duration);
-            rail.scrollLeft = startLeft + (distance * easeInOutCubic(progress));
-            updateRailUi(rail);
-
-            if (progress < 1) {
-                railAnimationFrames.set(rail, requestAnimationFrame(stepFrame));
-                return;
-            }
-
-            railAnimationFrames.delete(rail);
-            rail.scrollLeft = targetLeft;
-            updateRailUi(rail);
-        }
-
-        railAnimationFrames.set(rail, requestAnimationFrame(stepFrame));
+        rail.scrollTo({
+            left: step * targetIndex,
+            behavior: reducedMotionQuery.matches ? 'auto' : 'smooth'
+        });
     }
 
     if (briefingsNavButtons.length) {
@@ -215,18 +219,29 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (briefingRails.length) {
         briefingRails.forEach(function(rail) {
-            let rafId;
+            railStepCache.set(rail, measureRailStep(rail));
+            let rafPending = false;
             rail.addEventListener('scroll', function() {
-                if (rafId) cancelAnimationFrame(rafId);
-                rafId = requestAnimationFrame(function() {
+                if (rafPending) return;
+                rafPending = true;
+                requestAnimationFrame(function() {
+                    rafPending = false;
                     updateRailUi(rail);
                 });
-            });
+            }, { passive: true });
+
+            if ('onscrollend' in window) {
+                rail.addEventListener('scrollend', function() {
+                    updateRailUi(rail);
+                }, { passive: true });
+            }
+
             updateRailUi(rail);
         });
 
         window.addEventListener('resize', function() {
             briefingRails.forEach(function(rail) {
+                railStepCache.set(rail, measureRailStep(rail));
                 updateRailUi(rail);
             });
         });
