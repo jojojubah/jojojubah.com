@@ -9,8 +9,18 @@ document.addEventListener('DOMContentLoaded', function() {
     const navMenuToggle = document.getElementById('navMenuToggle');
     const siteMenu = document.getElementById('siteMenu');
     const siteMenuOverlay = document.getElementById('siteMenuOverlay');
+    const briefingRails = document.querySelectorAll('.briefings-rail');
+    const briefingsNavButtons = document.querySelectorAll('.briefings-nav-btn');
+    const briefingCards = document.querySelectorAll('.briefing-card');
+    const briefingModal = document.getElementById('briefingModal');
+    const briefingModalFrameWrap = document.getElementById('briefingModalFrameWrap');
+    const briefingModalFrame = document.getElementById('briefingModalFrame');
+    const briefingModalTitle = document.getElementById('briefingModalTitle');
+    const briefingModalOriginalLink = document.getElementById('briefingModalOriginalLink');
+    const briefingModalCloseButtons = document.querySelectorAll('[data-briefing-close]');
+    const railAnimationFrames = new WeakMap();
     const themeToggle = document.getElementById('themeToggle');
-    const sectionIds = ['home', 'about', 'skills', 'projects', 'contact'];
+    const sectionIds = ['home', 'about', 'skills', 'youtube', 'projects', 'contact'];
     const sections = sectionIds
         .map(function(id) { return document.getElementById(id); })
         .filter(Boolean);
@@ -66,9 +76,175 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape' && briefingModal && briefingModal.classList.contains('is-open')) {
+                closeBriefingModal();
+                return;
+            }
             if (event.key !== 'Escape') return;
             if (!siteNav.classList.contains('menu-open')) return;
             closeNavMenu({ returnFocus: true });
+        });
+    }
+
+    function buildBriefingEmbedUrl(videoId) {
+        return 'https://www.youtube-nocookie.com/embed/' + videoId + '?autoplay=1&rel=0&modestbranding=1&playsinline=1';
+    }
+
+    function closeBriefingModal() {
+        if (!briefingModal || !briefingModalFrame || !briefingModalFrameWrap) return;
+        briefingModal.classList.remove('is-open');
+        briefingModal.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('briefing-modal-open');
+        briefingModalFrame.src = '';
+        briefingModalFrameWrap.classList.remove('is-short');
+    }
+
+    function openBriefingModal(card) {
+        if (!briefingModal || !briefingModalFrame || !briefingModalFrameWrap || !briefingModalTitle || !briefingModalOriginalLink) return;
+        const videoId = card.getAttribute('data-video-id');
+        const videoType = card.getAttribute('data-video-type');
+        const videoTitle = card.getAttribute('data-video-title') || 'YouTube Video';
+        const videoUrl = card.getAttribute('data-video-url') || '#';
+        if (!videoId) return;
+
+        briefingModalFrameWrap.classList.toggle('is-short', videoType === 'short');
+        briefingModalTitle.textContent = videoTitle;
+        briefingModalOriginalLink.setAttribute('href', videoUrl);
+        briefingModalFrame.src = buildBriefingEmbedUrl(videoId);
+        briefingModal.classList.add('is-open');
+        briefingModal.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('briefing-modal-open');
+    }
+
+    function getRailStep(rail) {
+        const railStyles = window.getComputedStyle(rail);
+        const gap = parseFloat(railStyles.columnGap || railStyles.gap || '0');
+        return (rail.clientWidth || 1) + gap;
+    }
+
+    function getRailIndex(rail) {
+        const cards = rail.querySelectorAll('.briefing-card');
+        if (!cards.length) return 0;
+        const step = getRailStep(rail);
+        if (!step) return 0;
+        const rawIndex = Math.round(rail.scrollLeft / step);
+        return Math.max(0, Math.min(cards.length - 1, rawIndex));
+    }
+
+    function updateRailUi(rail) {
+        const railId = rail.id;
+        if (!railId) return;
+        const cards = rail.querySelectorAll('.briefing-card');
+        if (!cards.length) return;
+
+        const maxIndex = cards.length - 1;
+        const index = getRailIndex(rail);
+        const progress = document.querySelector('[data-rail-progress="' + railId + '"]');
+
+        if (progress) {
+            progress.textContent = String(index + 1) + ' / ' + String(cards.length);
+        }
+
+        document
+            .querySelectorAll('.briefings-nav-btn[data-rail-target="' + railId + '"][data-briefings-dir="prev"]')
+            .forEach(function(button) {
+                button.disabled = index <= 0;
+            });
+
+        document
+            .querySelectorAll('.briefings-nav-btn[data-rail-target="' + railId + '"][data-briefings-dir="next"]')
+            .forEach(function(button) {
+                button.disabled = index >= maxIndex;
+            });
+    }
+
+    function scrollRail(rail, direction) {
+        const cards = rail.querySelectorAll('.briefing-card');
+        if (!cards.length) return;
+        const currentIndex = getRailIndex(rail);
+        const targetIndex = Math.max(0, Math.min(cards.length - 1, currentIndex + (direction === 'prev' ? -1 : 1)));
+        const step = getRailStep(rail);
+        const targetLeft = step * targetIndex;
+        const previousFrame = railAnimationFrames.get(rail);
+        if (previousFrame) {
+            cancelAnimationFrame(previousFrame);
+        }
+
+        const startLeft = rail.scrollLeft;
+        const distance = targetLeft - startLeft;
+        const duration = 430;
+        let startTime = 0;
+
+        function easeInOutCubic(progress) {
+            return progress < 0.5
+                ? 4 * progress * progress * progress
+                : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+        }
+
+        function stepFrame(now) {
+            if (!startTime) startTime = now;
+            const elapsed = now - startTime;
+            const progress = Math.min(1, elapsed / duration);
+            rail.scrollLeft = startLeft + (distance * easeInOutCubic(progress));
+            updateRailUi(rail);
+
+            if (progress < 1) {
+                railAnimationFrames.set(rail, requestAnimationFrame(stepFrame));
+                return;
+            }
+
+            railAnimationFrames.delete(rail);
+            rail.scrollLeft = targetLeft;
+            updateRailUi(rail);
+        }
+
+        railAnimationFrames.set(rail, requestAnimationFrame(stepFrame));
+    }
+
+    if (briefingsNavButtons.length) {
+        briefingsNavButtons.forEach(function(button) {
+            button.addEventListener('click', function() {
+                const railId = button.getAttribute('data-rail-target');
+                const rail = railId ? document.getElementById(railId) : null;
+                const direction = button.getAttribute('data-briefings-dir');
+                if (!rail) return;
+                scrollRail(rail, direction);
+            });
+        });
+    }
+
+    if (briefingRails.length) {
+        briefingRails.forEach(function(rail) {
+            let rafId;
+            rail.addEventListener('scroll', function() {
+                if (rafId) cancelAnimationFrame(rafId);
+                rafId = requestAnimationFrame(function() {
+                    updateRailUi(rail);
+                });
+            });
+            updateRailUi(rail);
+        });
+
+        window.addEventListener('resize', function() {
+            briefingRails.forEach(function(rail) {
+                updateRailUi(rail);
+            });
+        });
+    }
+
+    if (briefingCards.length) {
+        briefingCards.forEach(function(card) {
+            card.addEventListener('click', function() {
+                openBriefingModal(card);
+            });
+        });
+    }
+
+    if (briefingModal && briefingModalCloseButtons.length) {
+        briefingModalCloseButtons.forEach(function(button) {
+            button.addEventListener('click', function() {
+                closeBriefingModal();
+            });
         });
     }
 
@@ -148,7 +324,7 @@ document.addEventListener('DOMContentLoaded', function() {
         setActiveBackgroundSection('home');
     }
 
-    const revealCardSelector = '.profile-card, .code-window, .info-card, .skill-category, .project-card, .title-card, .text-card';
+    const revealCardSelector = '.profile-card, .code-window, .info-card, .skill-category, .briefings-shell, .project-card, .title-card, .text-card';
     const revealCards = Array.from(document.querySelectorAll(revealCardSelector));
 
     if (revealCards.length) {
