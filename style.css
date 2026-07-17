@@ -610,19 +610,19 @@ body.dark-mode .site-nav-brand {
 .site-nav-menu-button {
     width: 42px;
     height: 42px;
-    border-radius: 10px;
-    border: 1px solid rgba(0, 0, 0, 0.22);
-    background: #f2f2f2;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    color: currentColor;
     cursor: pointer;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    transition: background 180ms ease, border-color 180ms ease, transform 180ms ease;
+    transition: transform 180ms ease;
 }
 
 body.dark-mode .site-nav-menu-button {
-    border-color: rgba(255, 255, 255, 0.34);
-    background: #111111;
+    background: transparent;
 }
 
 .site-nav-menu-button:hover {
@@ -1774,7 +1774,7 @@ body:not(.dark-mode) :is(
   .site-footer, .skill-category, .info-card, .profile-card, .project-card, .learn-liquid-card,
   .code-window, .window-header, .code-content, .toast-message,
   .linkedin-btn, .reveal-email-btn, .skill-tag,
-  .bio-icon, .category-icon, .site-nav-menu, .site-nav-toggle, .site-nav-menu-button,
+  .bio-icon, .category-icon, .site-nav-menu, .site-nav-toggle,
   .cookie-banner, .cookie-panel,
   .title-card, .text-card
 ) {
@@ -1786,7 +1786,7 @@ body.dark-mode :is(
   .site-footer, .skill-category, .info-card, .profile-card, .project-card, .learn-liquid-card,
   .code-window, .window-header, .code-content, .toast-message,
   .linkedin-btn, .reveal-email-btn, .skill-tag,
-  .bio-icon, .category-icon, .site-nav-menu, .site-nav-toggle, .site-nav-menu-button,
+  .bio-icon, .category-icon, .site-nav-menu, .site-nav-toggle,
   .cookie-banner, .cookie-panel,
   .title-card, .text-card
 ) {
