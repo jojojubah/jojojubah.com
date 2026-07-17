@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JojoJubah.com</title>
     <link rel="icon" type="image/png" href="assets/favicon.png">
-    <link rel="stylesheet" href="style.css?v=20260301-14">
+    <link rel="stylesheet" href="style.css?v=20260717-1">
 </head>
 <body data-active-section="home">
     <div class="bg-float-layer" aria-hidden="true">
@@ -37,9 +37,8 @@
             <div class="site-nav-menu-links">
                 <a href="#home" class="site-nav-link">Home</a>
                 <a href="#about" class="site-nav-link">About</a>
-                <a href="#skills" class="site-nav-link">Skills</a>
-                <a href="#youtube" class="site-nav-link">YouTube</a>
                 <a href="#projects" class="site-nav-link">Projects</a>
+                <a href="#skills" class="site-nav-link">Skills</a>
                 <a href="#contact" class="site-nav-link">Contact</a>
             </div>
             <div class="site-nav-menu-footer">
@@ -197,6 +196,31 @@
             </div>
         </section>
 
+        <section id="projects" class="projects">
+            <div class="container">
+                <div class="title-card">
+                    <h2>Projects</h2>
+                </div>
+                <div class="projects-content">
+                    <p class="projects-description text-card">Explore my latest project.</p>
+
+                    <div class="projects-grid">
+                        <div class="project-card learn-liquid-card">
+                            <img src="assets/vibenode-icon.png" alt="Learn Liquid Glass app icon" class="project-icon">
+                            <h3>Learn Liquid Glass</h3>
+                            <p>Hey friends, I made this app to help you learn Apple’s Liquid Glass design language with interactive lessons and real code. Try it, break it, and please send me your feedback so I can make it better for everyone.</p>
+                            <p class="project-status">Available now on the App Store.</p>
+                            <div class="store-badge-links" aria-label="Store badge for Learn Liquid Glass">
+                                <a href="https://apps.apple.com/app/learn-liquid-glass/id6768110722" target="_blank" rel="noopener noreferrer" aria-label="Download Learn Liquid Glass on the App Store">
+                                    <img class="app-store-badge" src="assets/badges/download-on-the-app-store.svg" alt="Download on the App Store" loading="lazy" decoding="async">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <section id="skills" class="skills">
             <div class="container">
                 <div class="skills-header">
@@ -282,123 +306,6 @@
             </div>
         </section>
 
-        <section id="youtube" class="briefings">
-            <div class="container">
-                <div class="title-card">
-                    <h2>YouTube</h2>
-                </div>
-                <p class="briefings-description text-card">A few videos and shorts from my channel.</p>
-
-                <div class="briefings-shell">
-                    <div class="briefings-group">
-                        <div class="briefings-toolbar">
-                            <p class="briefings-group-title">Videos</p>
-                            <p class="briefings-progress" data-rail-progress="youtubeVideosRail" aria-live="polite">1 / 2</p>
-                        </div>
-
-                        <div class="briefings-carousel briefings-carousel-videos">
-                            <button type="button" class="briefings-nav-btn briefings-nav-btn-side" data-briefings-dir="prev" data-rail-target="youtubeVideosRail" aria-label="Show previous video">
-                                <span aria-hidden="true">‹</span>
-                            </button>
-                            <div id="youtubeVideosRail" class="briefings-rail briefings-rail-video" aria-label="YouTube videos showcase">
-                                <button type="button" class="briefing-card briefing-card-video" data-video-id="TjYel8UL5aI" data-video-type="video" data-video-title="Build a YouTube MP3 Downloader App Using ChatGPT + Batch in 5 minutes (No Coding)" data-video-url="https://youtu.be/TjYel8UL5aI">
-                                    <div class="briefing-thumb">
-                                        <img src="https://i.ytimg.com/vi/TjYel8UL5aI/hqdefault.jpg" alt="Preview of Build a YouTube MP3 Downloader App Using ChatGPT + Batch in 5 minutes (No Coding)" loading="lazy" decoding="async">
-                                        <span class="briefing-play" aria-hidden="true">Play</span>
-                                    </div>
-                                    <span class="briefing-pill">Video</span>
-                                    <h3>Build a YouTube MP3 Downloader App Using ChatGPT + Batch in 5 minutes (No Coding)</h3>
-                                    <p>Build a custom YouTube downloader app using ChatGPT and batch script, no coding required.</p>
-                                </button>
-
-                                <button type="button" class="briefing-card briefing-card-video" data-video-id="g1l_BiwiqrQ" data-video-type="video" data-video-title="How to Watch Star Wars in Command Prompt [Easter Egg]" data-video-url="https://youtu.be/g1l_BiwiqrQ">
-                                    <div class="briefing-thumb">
-                                        <img src="https://i.ytimg.com/vi/g1l_BiwiqrQ/hqdefault.jpg" alt="Preview of How to Watch Star Wars in Command Prompt [Easter Egg]" loading="lazy" decoding="async">
-                                        <span class="briefing-play" aria-hidden="true">Play</span>
-                                    </div>
-                                    <span class="briefing-pill">Video</span>
-                                    <h3>How to Watch Star Wars in Command Prompt [Easter Egg]</h3>
-                                    <p>Did you know you can watch Star Wars Episode IV in CMD using ASCII animation?</p>
-                                </button>
-                            </div>
-                            <button type="button" class="briefings-nav-btn briefings-nav-btn-side" data-briefings-dir="next" data-rail-target="youtubeVideosRail" aria-label="Show next video">
-                                <span aria-hidden="true">›</span>
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="briefings-group">
-                        <div class="briefings-toolbar">
-                            <p class="briefings-group-title">Shorts</p>
-                            <p class="briefings-progress" data-rail-progress="youtubeShortsRail" aria-live="polite">1 / 3</p>
-                        </div>
-
-                        <div class="briefings-carousel briefings-carousel-shorts">
-                            <button type="button" class="briefings-nav-btn briefings-nav-btn-side" data-briefings-dir="prev" data-rail-target="youtubeShortsRail" aria-label="Show previous short">
-                                <span aria-hidden="true">‹</span>
-                            </button>
-                            <div id="youtubeShortsRail" class="briefings-rail briefings-rail-shorts" aria-label="YouTube shorts showcase">
-                                <button type="button" class="briefing-card briefing-card-short" data-video-id="kXA6Ktdqzos" data-video-type="short" data-video-title="Improve your ChatGPT responses with this follow up technique! #aiagents #productivity #chatgpt" data-video-url="https://youtube.com/shorts/kXA6Ktdqzos?feature=share">
-                                    <div class="briefing-thumb">
-                                        <img src="https://i.ytimg.com/vi/kXA6Ktdqzos/hqdefault.jpg" alt="Preview of Improve your ChatGPT responses with this follow up technique!" loading="lazy" decoding="async">
-                                        <span class="briefing-play" aria-hidden="true">Play</span>
-                                    </div>
-                                    <span class="briefing-pill">Short</span>
-                                    <h3>Improve your ChatGPT responses with this follow up technique!</h3>
-                                    <p>Use follow-up prompting to improve the quality of your ChatGPT responses.</p>
-                                </button>
-
-                                <button type="button" class="briefing-card briefing-card-short" data-video-id="ReqgGh-ewIc" data-video-type="short" data-video-title="How to create custom instructions for ChatGPT #productivity #aiagents  #chatgpt  #ai" data-video-url="https://youtube.com/shorts/ReqgGh-ewIc?feature=share">
-                                    <div class="briefing-thumb">
-                                        <img src="https://i.ytimg.com/vi/ReqgGh-ewIc/hqdefault.jpg" alt="Preview of How to create custom instructions for ChatGPT" loading="lazy" decoding="async">
-                                        <span class="briefing-play" aria-hidden="true">Play</span>
-                                    </div>
-                                    <span class="briefing-pill">Short</span>
-                                    <h3>How to create custom instructions for ChatGPT</h3>
-                                    <p>A simple and practical way to build your custom instructions in ChatGPT.</p>
-                                </button>
-
-                                <button type="button" class="briefing-card briefing-card-short" data-video-id="5BXPNCipCXI" data-video-type="short" data-video-title="Learn to vibe code your own website in 3 mins (Easy Method) #ChatGPT #VibeCoding #Website" data-video-url="https://youtube.com/shorts/5BXPNCipCXI?feature=share">
-                                    <div class="briefing-thumb">
-                                        <img src="https://i.ytimg.com/vi/5BXPNCipCXI/hqdefault.jpg" alt="Preview of Learn to vibe code your own website in 3 mins (Easy Method)" loading="lazy" decoding="async">
-                                        <span class="briefing-play" aria-hidden="true">Play</span>
-                                    </div>
-                                    <span class="briefing-pill">Short</span>
-                                    <h3>Learn to vibe code your own website in 3 mins (Easy Method)</h3>
-                                    <p>An easy method to start building your own website with ChatGPT and simple prompts.</p>
-                                </button>
-                            </div>
-                            <button type="button" class="briefings-nav-btn briefings-nav-btn-side" data-briefings-dir="next" data-rail-target="youtubeShortsRail" aria-label="Show next short">
-                                <span aria-hidden="true">›</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="projects" class="projects">
-            <div class="container">
-                <div class="title-card">
-                    <h2>Projects</h2>
-                </div>
-                <div class="projects-content">
-                    <p class="projects-description text-card">Explore my latest project.</p>
-
-                    <div class="projects-grid">
-                        <div class="project-card learn-liquid-card">
-                            <img src="assets/vibenode-icon.png" alt="Learn Liquid Glass app icon" class="project-icon">
-                            <h3>Learn Liquid Glass</h3>
-                            <p>Hey friends, I made this app to help you learn Apple’s Liquid Glass design language with interactive lessons and real code. Try it, break it, and please send me your feedback so I can make it better for everyone.</p>
-                            <a href="https://testflight.apple.com/join/2MckyQUn" class="project-btn" target="_blank" rel="noopener noreferrer">
-                                Join TestFlight Beta
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
         <section id="contact" class="contact">
             <div class="container">
                 <div class="title-card">
@@ -426,9 +333,8 @@
                     <h4>Sections</h4>
                     <a href="#home">Home</a>
                     <a href="#about">About</a>
-                    <a href="#skills">Skills</a>
-                    <a href="#youtube">YouTube</a>
                     <a href="#projects">Projects</a>
+                    <a href="#skills">Skills</a>
                     <a href="#contact">Contact</a>
                 </div>
                 <div class="footer-col">
@@ -503,20 +409,7 @@
         Thanks for supporting Learn Liquid Glass, hope you enjoy it! 😉
     </div>
 
-    <section id="briefingModal" class="briefing-modal" aria-hidden="true" aria-labelledby="briefingModalTitle" role="dialog" aria-modal="true">
-        <button type="button" class="briefing-modal-backdrop" data-briefing-close="backdrop" aria-label="Close video player"></button>
-        <div class="briefing-modal-dialog" role="document">
-            <button type="button" class="briefing-modal-close" data-briefing-close="button" aria-label="Close video player">Close</button>
-            <p class="briefing-modal-label">YouTube</p>
-            <h3 id="briefingModalTitle">Video</h3>
-            <div id="briefingModalFrameWrap" class="briefing-modal-frame-wrap">
-                <iframe id="briefingModalFrame" class="briefing-modal-frame" src="" title="YouTube player" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
-            </div>
-            <a id="briefingModalOriginalLink" class="briefing-modal-link" href="#" target="_blank" rel="noopener noreferrer">Open on YouTube</a>
-        </div>
-    </section>
-
-    <script src="app.js?v=20260301-7"></script>
+    <script src="app.js?v=20260717-1"></script>
     <script src="cookie-manager.js?v=20260221-6"></script>
 </body>
 </html>

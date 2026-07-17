@@ -1,6 +1,6 @@
 // Y3JlYXRlZCBieSBKb2pvSnViYWggMjAyNQ==
 document.addEventListener('DOMContentLoaded', function() {
-    const learnLiquidButton = document.querySelector('.learn-liquid-card .project-btn');
+    const learnLiquidButton = document.querySelector('.learn-liquid-card .store-badge-links a');
     const learnLiquidToast = document.getElementById('learnLiquidToast');
     const revealEmailBtn = document.getElementById('revealEmail');
     const emailHidden = document.getElementById('emailHidden');
@@ -9,19 +9,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const navMenuToggle = document.getElementById('navMenuToggle');
     const siteMenu = document.getElementById('siteMenu');
     const siteMenuOverlay = document.getElementById('siteMenuOverlay');
-    const briefingRails = document.querySelectorAll('.briefings-rail');
-    const briefingsNavButtons = document.querySelectorAll('.briefings-nav-btn');
-    const briefingCards = document.querySelectorAll('.briefing-card');
-    const briefingModal = document.getElementById('briefingModal');
-    const briefingModalFrameWrap = document.getElementById('briefingModalFrameWrap');
-    const briefingModalFrame = document.getElementById('briefingModalFrame');
-    const briefingModalTitle = document.getElementById('briefingModalTitle');
-    const briefingModalOriginalLink = document.getElementById('briefingModalOriginalLink');
-    const briefingModalCloseButtons = document.querySelectorAll('[data-briefing-close]');
-    const railStepCache = new WeakMap();
-    const railUiCache = new Map();
     const themeToggle = document.getElementById('themeToggle');
-    const sectionIds = ['home', 'about', 'skills', 'youtube', 'projects', 'contact'];
+    const sectionIds = ['home', 'about', 'projects', 'skills', 'contact'];
     const sections = sectionIds
         .map(function(id) { return document.getElementById(id); })
         .filter(Boolean);
@@ -77,189 +66,9 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         document.addEventListener('keydown', function(event) {
-            if (event.key === 'Escape' && briefingModal && briefingModal.classList.contains('is-open')) {
-                closeBriefingModal();
-                return;
-            }
             if (event.key !== 'Escape') return;
             if (!siteNav.classList.contains('menu-open')) return;
             closeNavMenu({ returnFocus: true });
-        });
-    }
-
-    function buildBriefingEmbedUrl(videoId) {
-        return 'https://www.youtube-nocookie.com/embed/' + videoId + '?autoplay=1&rel=0&modestbranding=1&playsinline=1';
-    }
-
-    function closeBriefingModal() {
-        if (!briefingModal || !briefingModalFrame || !briefingModalFrameWrap) return;
-        briefingModal.classList.remove('is-open');
-        briefingModal.setAttribute('aria-hidden', 'true');
-        document.body.classList.remove('briefing-modal-open');
-        briefingModalFrame.src = '';
-        briefingModalFrameWrap.classList.remove('is-short');
-    }
-
-    function openBriefingModal(card) {
-        if (!briefingModal || !briefingModalFrame || !briefingModalFrameWrap || !briefingModalTitle || !briefingModalOriginalLink) return;
-        const videoId = card.getAttribute('data-video-id');
-        const videoType = card.getAttribute('data-video-type');
-        const videoTitle = card.getAttribute('data-video-title') || 'YouTube Video';
-        const videoUrl = card.getAttribute('data-video-url') || '#';
-        if (!videoId) return;
-
-        briefingModalFrameWrap.classList.toggle('is-short', videoType === 'short');
-        briefingModalTitle.textContent = videoTitle;
-        briefingModalOriginalLink.setAttribute('href', videoUrl);
-        briefingModalFrame.src = buildBriefingEmbedUrl(videoId);
-        briefingModal.classList.add('is-open');
-        briefingModal.setAttribute('aria-hidden', 'false');
-        document.body.classList.add('briefing-modal-open');
-    }
-
-    function measureRailStep(rail) {
-        const railStyles = window.getComputedStyle(rail);
-        const gap = parseFloat(railStyles.columnGap || railStyles.gap || '0');
-        return (rail.clientWidth || 1) + gap;
-    }
-
-    function getRailStep(rail) {
-        const cachedStep = railStepCache.get(rail);
-        if (cachedStep) return cachedStep;
-        const measuredStep = measureRailStep(rail);
-        railStepCache.set(rail, measuredStep);
-        return measuredStep;
-    }
-
-    function getRailUiRefs(railId) {
-        if (railUiCache.has(railId)) {
-            return railUiCache.get(railId);
-        }
-
-        const refs = {
-            progress: document.querySelector('[data-rail-progress="' + railId + '"]'),
-            prevButtons: Array.from(document.querySelectorAll('.briefings-nav-btn[data-rail-target="' + railId + '"][data-briefings-dir="prev"]')),
-            nextButtons: Array.from(document.querySelectorAll('.briefings-nav-btn[data-rail-target="' + railId + '"][data-briefings-dir="next"]'))
-        };
-        railUiCache.set(railId, refs);
-        return refs;
-    }
-
-    function getRailIndex(rail) {
-        const cards = rail.querySelectorAll('.briefing-card');
-        if (!cards.length) return 0;
-        const step = getRailStep(rail);
-        if (!step) return 0;
-        const rawIndex = Math.round(rail.scrollLeft / step);
-        return Math.max(0, Math.min(cards.length - 1, rawIndex));
-    }
-
-    function updateRailVisuals(rail) {
-        const cards = rail.querySelectorAll('.briefing-card');
-        if (!cards.length) return;
-        const activeIndex = getRailIndex(rail);
-
-        cards.forEach(function(card, index) {
-            const isActive = index === activeIndex;
-            card.classList.toggle('is-active', isActive);
-            card.classList.toggle('is-before', index < activeIndex);
-            card.classList.toggle('is-after', index > activeIndex);
-            card.setAttribute('aria-current', isActive ? 'true' : 'false');
-        });
-    }
-
-    function updateRailUi(rail) {
-        const railId = rail.id;
-        if (!railId) return;
-        const cards = rail.querySelectorAll('.briefing-card');
-        if (!cards.length) return;
-
-        const maxIndex = cards.length - 1;
-        const index = getRailIndex(rail);
-        const refs = getRailUiRefs(railId);
-
-        if (refs.progress) {
-            refs.progress.textContent = String(index + 1) + ' / ' + String(cards.length);
-        }
-
-        refs.prevButtons.forEach(function(button) {
-            button.disabled = index <= 0;
-        });
-
-        refs.nextButtons.forEach(function(button) {
-            button.disabled = index >= maxIndex;
-        });
-
-        updateRailVisuals(rail);
-    }
-
-    function scrollRail(rail, direction) {
-        const cards = rail.querySelectorAll('.briefing-card');
-        if (!cards.length) return;
-        const currentIndex = getRailIndex(rail);
-        const targetIndex = Math.max(0, Math.min(cards.length - 1, currentIndex + (direction === 'prev' ? -1 : 1)));
-        const step = getRailStep(rail);
-        rail.scrollTo({
-            left: step * targetIndex,
-            behavior: reducedMotionQuery.matches ? 'auto' : 'smooth'
-        });
-    }
-
-    if (briefingsNavButtons.length) {
-        briefingsNavButtons.forEach(function(button) {
-            button.addEventListener('click', function() {
-                const railId = button.getAttribute('data-rail-target');
-                const rail = railId ? document.getElementById(railId) : null;
-                const direction = button.getAttribute('data-briefings-dir');
-                if (!rail) return;
-                scrollRail(rail, direction);
-            });
-        });
-    }
-
-    if (briefingRails.length) {
-        briefingRails.forEach(function(rail) {
-            railStepCache.set(rail, measureRailStep(rail));
-            let rafPending = false;
-            rail.addEventListener('scroll', function() {
-                if (rafPending) return;
-                rafPending = true;
-                requestAnimationFrame(function() {
-                    rafPending = false;
-                    updateRailUi(rail);
-                });
-            }, { passive: true });
-
-            if ('onscrollend' in window) {
-                rail.addEventListener('scrollend', function() {
-                    updateRailUi(rail);
-                }, { passive: true });
-            }
-
-            updateRailUi(rail);
-        });
-
-        window.addEventListener('resize', function() {
-            briefingRails.forEach(function(rail) {
-                railStepCache.set(rail, measureRailStep(rail));
-                updateRailUi(rail);
-            });
-        });
-    }
-
-    if (briefingCards.length) {
-        briefingCards.forEach(function(card) {
-            card.addEventListener('click', function() {
-                openBriefingModal(card);
-            });
-        });
-    }
-
-    if (briefingModal && briefingModalCloseButtons.length) {
-        briefingModalCloseButtons.forEach(function(button) {
-            button.addEventListener('click', function() {
-                closeBriefingModal();
-            });
         });
     }
 
@@ -339,7 +148,7 @@ document.addEventListener('DOMContentLoaded', function() {
         setActiveBackgroundSection('home');
     }
 
-    const revealCardSelector = '.profile-card, .code-window, .info-card, .skill-category, .briefings-shell, .project-card, .title-card, .text-card';
+    const revealCardSelector = '.profile-card, .code-window, .info-card, .skill-category, .project-card, .title-card, .text-card';
     const revealCards = Array.from(document.querySelectorAll(revealCardSelector));
 
     if (revealCards.length) {
