@@ -1546,13 +1546,14 @@ body.dark-mode .reveal-email-btn {
 }
 
 .projects-grid {
-    display: flex;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2rem;
     width: 100%;
 }
 
-.projects-grid .learn-liquid-card {
-    max-width: 720px;
+.projects-grid .project-card {
+    max-width: none;
     width: 100%;
 }
 
@@ -1572,7 +1573,8 @@ body.dark-mode .reveal-email-btn {
     overflow: hidden;
 }
 
-.learn-liquid-card::after {
+.learn-liquid-card::after,
+.vroulette-card::after {
     content: "";
     position: absolute;
     top: -50%;
@@ -1646,7 +1648,8 @@ body.dark-mode .reveal-email-btn {
     width: auto;
 }
 
-body.dark-mode .learn-liquid-card {
+body.dark-mode .learn-liquid-card,
+body.dark-mode .vroulette-card {
     background: rgba(15, 23, 42, 0.7) !important;
     border-color: rgba(255, 255, 255, 0.12) !important;
 }
@@ -2203,7 +2206,11 @@ body.js-reveal .scroll-fade-card.is-visible {
 }
 
 @media (max-width: 960px) {
-  .site-footer-inner {
+    .projects-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .site-footer-inner {
     gap: 22px;
   }
 
