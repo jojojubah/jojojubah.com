@@ -86,12 +86,10 @@
 
   function showBanner() {
     banner.classList.add('show');
-    document.body.classList.add('cookie-consent-required');
   }
 
   function hideBanner() {
     banner.classList.remove('show');
-    document.body.classList.remove('cookie-consent-required');
   }
 
   function openPanel() {
@@ -174,27 +172,6 @@
     if (event.target.closest('.cookie-banner')) return;
     closePanel();
   });
-
-  document.addEventListener('click', function(event) {
-    if (!document.body.classList.contains('cookie-consent-required')) return;
-    if (event.target.closest('.cookie-banner') || event.target.closest('.cookie-panel')) return;
-    event.preventDefault();
-    event.stopPropagation();
-  }, true);
-
-  document.addEventListener('auxclick', function(event) {
-    if (!document.body.classList.contains('cookie-consent-required')) return;
-    if (event.target.closest('.cookie-banner') || event.target.closest('.cookie-panel')) return;
-    event.preventDefault();
-    event.stopPropagation();
-  }, true);
-
-  document.addEventListener('submit', function(event) {
-    if (!document.body.classList.contains('cookie-consent-required')) return;
-    if (event.target.closest('.cookie-banner') || event.target.closest('.cookie-panel')) return;
-    event.preventDefault();
-    event.stopPropagation();
-  }, true);
 
   const stored = readConsent();
   if (stored) {

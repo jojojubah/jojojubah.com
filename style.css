@@ -598,11 +598,8 @@ body.dark-mode .site-nav {
 @media (min-width: 769px) {
     .site-nav-inner {
         max-width: none;
+        padding-left: 1rem;
         padding-right: 1rem;
-    }
-
-    .site-nav-brand {
-        margin-left: max(0px, calc((100vw - 1200px) / 2));
     }
 }
 
@@ -1961,6 +1958,29 @@ body.dark-mode .cookie-banner {
 
 .cookie-banner-text p {
   font-size: 13px;
+}
+
+.cookie-inline-action {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  padding: 0;
+  font: inherit;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.cookie-inline-action:hover {
+  opacity: 0.68;
+}
+
+.cookie-inline-action:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+  border-radius: 2px;
 }
 
 .cookie-banner-text strong {
