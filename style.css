@@ -595,6 +595,17 @@ body.dark-mode .site-nav {
     justify-content: space-between;
 }
 
+@media (min-width: 769px) {
+    .site-nav-inner {
+        max-width: none;
+        padding-right: 1rem;
+    }
+
+    .site-nav-brand {
+        margin-left: max(0px, calc((100vw - 1200px) / 2));
+    }
+}
+
 .site-nav-brand {
     color: #000000;
     text-decoration: none;
