@@ -20,11 +20,45 @@ document.addEventListener('DOMContentLoaded', function() {
     let learnLiquidToastTimeout;
 
     const savedDarkMode = localStorage.getItem('darkMode');
-    const useDarkMode = savedDarkMode === 'true';
+    const useDarkMode = savedDarkMode === null ? true : savedDarkMode === 'true';
+    document.body.classList.toggle('dark-mode', useDarkMode);
 
-    if (useDarkMode) {
-        document.body.classList.add('dark-mode');
+    function refreshProjectIcons() {
+        const projectIcons = document.querySelectorAll('.project-icon[data-app-store-id]');
+
+        projectIcons.forEach(function(icon) {
+            const appStoreId = icon.getAttribute('data-app-store-id');
+            const country = icon.getAttribute('data-app-store-country') || 'gb';
+            if (!appStoreId) return;
+
+            const lookupUrl = 'https://itunes.apple.com/lookup?id=' +
+                encodeURIComponent(appStoreId) +
+                '&country=' + encodeURIComponent(country) +
+                '&entity=software';
+
+            fetch(lookupUrl, { cache: 'no-store' })
+                .then(function(response) {
+                    if (!response.ok) throw new Error('App Store lookup failed');
+                    return response.json();
+                })
+                .then(function(payload) {
+                    const app = Array.isArray(payload.results)
+                        ? payload.results.find(function(result) {
+                            return String(result.trackId) === appStoreId;
+                        })
+                        : null;
+                    const artworkUrl = app && (app.artworkUrl512 || app.artworkUrl100);
+                    if (artworkUrl) {
+                        icon.src = artworkUrl;
+                    }
+                })
+                .catch(function() {
+                    // Keep the bundled icon when Apple lookup is unavailable.
+                });
+        });
     }
+
+    refreshProjectIcons();
 
     function closeNavMenu(options) {
         const shouldReturnFocus = Boolean(options && options.returnFocus);
@@ -148,7 +182,7 @@ document.addEventListener('DOMContentLoaded', function() {
         setActiveBackgroundSection('home');
     }
 
-    const revealCardSelector = '.profile-card, .code-window, .info-card, .skill-category, .project-card, .title-card, .text-card';
+    const revealCardSelector = '.profile-card, .code-window, .info-card, .skill-category, .title-card, .text-card';
     const revealCards = Array.from(document.querySelectorAll(revealCardSelector));
 
     if (revealCards.length) {
