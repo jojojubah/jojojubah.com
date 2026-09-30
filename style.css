@@ -1315,6 +1315,20 @@ body.dark-mode .reveal-email-btn {
     font-size: 0.9rem;
 }
 
+.profile-card > .profile-role {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+}
+
+.profile-role img {
+    display: block;
+    width: auto;
+    height: 1.45em;
+    flex: 0 0 auto;
+}
+
 .skills-tags {
     display: flex;
     flex-wrap: wrap;

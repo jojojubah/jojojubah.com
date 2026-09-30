@@ -1,29 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" role="img" aria-label="VibeNode mark in dark silver">
   <defs>
-    <linearGradient id="logo-gradient" x1="0%" y1="100%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#8f949d" />
-      <stop offset="36%" stop-color="#b9bdc4" />
-      <stop offset="72%" stop-color="#e1e3e7" />
-      <stop offset="100%" stop-color="#ffffff" />
+    <linearGradient id="silver-gradient" gradientUnits="userSpaceOnUse" x1="125" y1="75" x2="500" y2="580">
+      <stop offset="0%" stop-color="#d7dbe0" />
+      <stop offset="24%" stop-color="#a8adb4" />
+      <stop offset="52%" stop-color="#747a82" />
+      <stop offset="78%" stop-color="#4b5057" />
+      <stop offset="100%" stop-color="#292d33" />
     </linearGradient>
-    <clipPath id="v-cut">
-      <rect x="0" y="184" width="740" height="700" />
-    </clipPath>
   </defs>
-  <g fill="url(#logo-gradient)" stroke="url(#logo-gradient)">
-    <polyline
-      points="196 120 436 760 676 120"
-      fill="none"
-      stroke="url(#logo-gradient)"
-      stroke-width="128"
-      stroke-linecap="butt"
-      stroke-linejoin="bevel"
-      clip-path="url(#v-cut)"
-    />
-    <line x1="760" y1="550" x2="856" y2="438" stroke-width="24" stroke-linecap="round" />
-    <line x1="760" y1="550" x2="890" y2="665" stroke-width="24" stroke-linecap="round" />
-    <circle cx="760" cy="550" r="62" />
-    <circle cx="856" cy="438" r="38" />
-    <circle cx="890" cy="665" r="38" />
-  </g>
+  <path d="M444.30 600.00 L429.99 599.63 L412.93 596.42 L397.52 590.93 L381.56 581.52 L371.65 573.27 L359.81 559.77 L343.04 527.85 L336.42 518.88 L322.00 506.94 L305.60 500.30 L288.54 498.46 L270.92 500.28 L260.90 503.63 L223.04 521.60 L193.32 527.66 L178.46 528.11 L157.54 525.96 L137.73 520.98 L120.11 513.70 L95.90 497.88 L84.57 487.12 L74.60 475.01 L65.95 460.70 L60.42 447.49 L56.01 430.98 L54.33 411.72 L58.14 385.30 L69.14 358.88 L86.77 334.66 L96.45 325.03 L110.76 313.93 L137.73 300.19 L165.25 292.97 L186.71 291.24 L222.80 292.83 L239.54 290.63 L259.16 283.47 L271.60 276.32 L283.30 266.96 L298.44 248.62 L308.90 226.80 L312.76 208.83 L312.09 170.09 L314.67 146.97 L324.06 120.00 L339.35 95.23 L358.44 75.22 L385.41 56.89 L402.47 49.29 L418.98 44.26 L436.60 41.05 L454.21 40.00 L480.08 42.68 L504.85 49.82 L525.21 60.28 L547.78 78.23 L566.24 101.29 L576.23 120.55 L583.78 146.97 L585.67 168.44 L584.39 184.40 L581.07 199.81 L576.14 214.12 L569.03 227.88 L559.62 241.64 L549.41 253.20 L537.87 263.91 L524.11 273.83 L506.50 283.23 L488.88 289.82 L464.12 294.83 L434.94 294.78 L398.62 287.76 L385.41 287.80 L374.40 290.06 L361.19 295.58 L347.80 305.49 L337.51 318.15 L329.82 334.57 L325.90 356.12 L327.06 372.09 L329.27 381.23 L333.12 391.19 L341.37 404.56 L355.25 417.22 L374.78 426.58 L393.75 429.33 L410.11 427.68 L430.54 421.78 L443.75 419.57 L460.81 419.77 L477.33 423.45 L492.74 430.11 L507.05 439.95 L521.12 455.20 L531.54 473.91 L537.10 493.73 L537.69 517.39 L532.17 539.96 L522.81 557.57 L509.25 573.31 L488.33 588.16 L467.42 596.44 L444.30 600.00 Z" fill="url(#silver-gradient)" />
 </svg>
