@@ -1596,7 +1596,7 @@ body.dark-mode .reveal-email-btn {
 }
 
 .learn-liquid-card::after,
-.vroulette-card::after {
+.roulette-play-card::after {
     content: "";
     position: absolute;
     top: -50%;
@@ -1611,7 +1611,7 @@ body.dark-mode .reveal-email-btn {
 }
 
 .learn-liquid-card > *,
-.vroulette-card > * {
+.roulette-play-card > * {
     position: relative;
     z-index: 1;
 }
@@ -1672,7 +1672,7 @@ body.dark-mode .reveal-email-btn {
 }
 
 body.dark-mode .learn-liquid-card,
-body.dark-mode .vroulette-card {
+body.dark-mode .roulette-play-card {
     background: rgba(15, 23, 42, 0.7) !important;
     border-color: rgba(255, 255, 255, 0.12) !important;
 }
@@ -2244,7 +2244,7 @@ body.js-reveal .scroll-fade-card.is-visible {
 
 @media (prefers-reduced-motion: reduce) {
   .learn-liquid-card::after,
-  .vroulette-card::after {
+  .roulette-play-card::after {
     animation: none !important;
   }
 
